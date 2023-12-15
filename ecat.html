@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>the tool</title>
+        <style>
+            html:focus-within {
+    scroll-behavior: smooth;
+  }
+  html {
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+  
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+  
+  body, h1, h2, h3, h4, h5, h6, p, ol, ul {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+  }
+
+
+body{
+    background-color: hsl(250, 10%, 25%);
+    color: white;
+    font-family: sans-serif;
+    padding: 10px;
+}
+#pasteTextHere{
+    padding: .5em 1.75em;
+    border-radius: 5px;
+    outline: none;
+    margin-bottom: 40px;
+   
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 400px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+.copiable {
+    text-transform: capitalize;
+    color: hsl(250, 20%, 50%);
+    padding: 0 5px;
+    border-bottom: solid 1px  hsla(260, 40%, 80%, 0);
+    transition: border ease .2s, background-color ease .6s, color ease .6s;
+    display: inline-block;
+}
+.copiable:hover{
+    cursor: default;
+}
+
+.hoverable{
+    color: white;
+}
+.hoverable:hover{
+    border-bottom-color:  hsla(260, 40%, 80%, 1);
+    cursor: pointer;
+    
+}
+/* .copiable:active{
+    background-color: hsla(260, 40%, 80%, 1);
+    color: black;
+} */
+.results-container{
+    max-width: 400px;
+    border: 2px hsl(260, 40%, 70%) solid;
+    border-radius: 10px;
+    padding: 20px;
+
+}
+.results-container p{
+    margin-bottom: 5px;
+color: hsl(260, 30%, 80%);
+}
+.notepad{
+    margin-top: 50px;
+    max-width: 350px;
+    min-height: 200px;
+    resize: vertical;
+      overflow: auto;
+      background-color: hsl(260, 10%, 40%);
+      color: white;
+      font-size: 16px;
+      border-radius: 10px;
+      display: block;
+      order: 1;
+      padding: 10px;
+      outline:2px hsl(260, 40%, 70%) solid;
+}
+
+        </style>
+    </head>
+    <!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+    <body>
+        <div class="container">
+            <input
+                type="button"
+                id="pasteTextHere"
+                onclick="pasteText()"
+                value="click to populate"
+            />
+            
+            <textarea class="notepad"></textarea>
+        </div>
+       
+        <script>
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+const fetchedDataRequirements = [];
+class FetchedData {
+    constructor(
+        name,
+        type,
+        isUppercase,
+        isCapitalize,
+        isDate,
+        regexRule,
+        hasMultipleOccurances,
+        wantFirstOccurance
+    ) {
+        this.name = name;
+        this.type = type;
+        this.isUppercase = isUppercase;
+        this.isCapitalize = isCapitalize;
+        this.isDate = isDate;
+        this.regexRule = new RegExp(regexRule);
+        this.hasMultipleOccurances = hasMultipleOccurances;
+        this.wantFirstOccurance = wantFirstOccurance;
+    }
+    lookFor(source) {
+        let barnFind = source.match(this.regexRule);
+     //   console.log("barn find: ",barnFind)
+        let result = [];
+        result.push(this.name);
+        if(this.name === "Address Line 1"){
+            console.log(barnFind)
+        }
+
+        if (this.wantFirstOccurance) {
+            if (barnFind != null) {
+                result.push(barnFind[0])
+            } else {
+                result.push("n/a")
+            }
+         //   console.log("result: ", result)
+            return result
+        }
+        if (this.hasMultipleOccurances) {
+            if (barnFind == null) {
+                result.push("n/a")
+                return result
+            }
+            if(this.type === "phoneNumber"){
+                let array = []
+                barnFind.forEach((el) => {
+                    let temp = el.match(/\d+/)
+                    array.push(temp[0])
+                })
+                result.push(...array)
+               // console.log("result: ", result)
+                return result
+            }
+            if(this.type === "actone"){
+                let array = []
+                barnFind.forEach((el) => {
+                    let temp = el.match(/([\d,]+)/g)
+                    array.push(...temp[0].split(","))
+                    
+                })
+                result.push(...array)
+                //console.log("result: ", result)
+                return result
+            }
+            if(this.type === "products"){
+               
+                let array = []
+                let temp = barnFind[0].match(/[^\s*]\w*/g)
+                for(let i = 0; i <= temp.length-2;i++){
+                    if(productsNames.map(el=>el.toLowerCase()).includes(temp[i].toLowerCase())){
+                        if(temp[i].toLowerCase()=="creditcard"){
+                            array.push(
+                                {
+                                "productName": temp[i],
+                                "cardNumber": temp[i+1],
+                                })
+                        }
+                        else{
+                            array.push(
+                                {
+                                "productName": temp[i],
+                                "sortcode": temp[i+1],
+                                "accountNumber": temp[i+2],
+                                }
+                            )
+                        }
+                    }
+                }
+                
+                result.push(...array)
+               // console.log("result: ", result)
+                return result
+            }
+        }
+        if (barnFind != null) {
+            result.push(barnFind[1])
+        } else {
+            result.push("n/a")
+        }
+      //  console.log("result: ", result)
+        return result
+    }
+}
+
+let inputString =
+    "Exit ID asdkfj asd 22-feb-2021 EXT1234567890 aasstop pause, extend on hold,      brand       Paribas kartofle  Customer ID (CIN)     2244668819 cala masa         ronz234234 23456 r2 2 Title         Mr. next another thing   address line 1 1 beck Avenue de rue 1         address Line 2 warwick self church   ciTY/tOwn marlborough postcode we4 cj7              first name Mc SHISH ashfd EXT0987654321 last name de AZAZ 43 4 fdf date of birth   12-feb-2023    telephone number (optional) 02345678901   fax number (optional) 56473829102 mobile number (optional) +442243568920 mobile number (optional) 44275937584632  ActOne reference 13245212,12345678,23487961,123024561,119900311,52345567547  expiry date MTA 123234 12345678 No ISA 223234 2345623 Yes CreditCard 57685768576857685 No account open";
+let productsNames = ["MTA", "ISA", "BBLS", "BBILS", "CreditCard"]
+
+    
+
+fetchedDataRequirements.push(
+    new FetchedData(
+        "Case Number",
+        "caseNumber",
+        true,
+        false,
+        false,
+        /EXT\d{10}/i,
+        false,
+        true
+    )
+);
+fetchedDataRequirements.push(
+    new FetchedData(
+        "Brand",
+        "brandName",
+        false,
+        true,
+        false,
+        /(?:\bbrand\s+)(\w+)/i,
+        false,
+        false
+    )
+);
+fetchedDataRequirements.push(
+    new FetchedData(
+        "CIN",
+        "cin",
+        true,
+        false,
+        false,
+        /\bCustomer\s+\bID\s+\D*(\d{10})/i,
+        false,
+        false
+    )
+);
+fetchedDataRequirements.push(
+    new FetchedData(
+        "Title",
+        "title",
+        false,
+        true,
+        false,
+        /(?:\bTitle\s+)(\w+)/i,
+        false,
+        false
+    )
+);
+fetchedDataRequirements.push(
+    new FetchedData(
+        "First Name",
+        "firstName",
+        false,
+        true,
+        false,
+        /(?:first\s+name\s+)(\w+(?:\s+\w+)?)/i,
+        false,
+        false
+    )
+);
+fetchedDataRequirements.push(
+    new FetchedData(
+        "Middle Name",
+        "middleName",
+        false,
+        true,
+        false,
+        /(?:middle\s+name\s+)(\w+(?:\s+\w+)?)/i,
+        false,
+        false
+    )
+);
+fetchedDataRequirements.push(
+    new FetchedData(
+        "Last Name",
+        "lastName",
+        false,
+        true,
+        false,
+        /(?:last\s+name\s+)(\w+(?:\s+\w+)?)/i,
+        false,
+        false
+    )
+);
+fetchedDataRequirements.push(
+    new FetchedData(
+        "Address Line 1",
+        "addressLineOne",
+        false,
+        true,
+        false,
+        /address line 1\s*([\w\s]+)\s*address line 2/i,
+        false,
+        false
+    )
+);
+fetchedDataRequirements.push(
+    new FetchedData(
+        "Address Line 2",
+        "addressLineTwo",
+        false,
+        true,
+        false,
+        /\baddress line 2\b\s*([\w\d\s]+)\s*\bcity\/town\b/i,
+        false,
+        false
+    )
+);
+fetchedDataRequirements.push(
+    new FetchedData(
+        "City/Town",
+        "addressTown",
+        false,
+        true,
+        false,
+        /\bcity\/town\b\s*([\w\d\s]+)\s*\bpostcode\b/i,
+        false,
+        false
+    )
+);
+fetchedDataRequirements.push(
+    new FetchedData(
+        "Postcode",
+        "addressPostcode",
+        false,
+        true,
+        false,
+        /\bpostcode\b\s*(\b[a-zA-Z0-9]{2,4}\s[a-zA-Z0-9]{3}\b)/i,
+
+        false,
+        false
+    )
+);
+fetchedDataRequirements.push(
+    new FetchedData(
+        "Date of Birth",
+        "dob",
+        false,
+        true,
+        false,
+        /\bdate of birth\s*(\d{1,2}-[a-zA-Z]{3}-\d{4})\s*/,
+        false,
+        false
+    )
+);
+fetchedDataRequirements.push(
+    new FetchedData(
+        "Phone Number",
+        "phoneNumber",
+        false,
+        true,
+        false,
+        /\bnumber\s*\(optional\)\s*((?:\d{11}|\+44\s?\d{12})(?:\s+(?:\d{11}|\+44\s?\d{12}))*)/g,
+
+        true,
+        false
+    )
+)
+fetchedDataRequirements.push(
+    new FetchedData(
+        "ActOne Refrenece",
+        "actone",
+        false,
+        true,
+        false,
+        /reference\s*([\d,]*)\s*expiry/gi,
+        true,
+        false
+    )
+)
+fetchedDataRequirements.push(
+    new FetchedData(
+        "Products",
+        "products",
+        false,
+        true,
+        false,
+        /((?<=expiry date)(.*))(?=account open)/gi,
+        true,
+        false
+    )
+)
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
+
+
+
+
+
+
+let filteredData = []
+
+function pasteText() {
+   
+        // Read text from the clipboard
+    navigator.clipboard
+        .readText()
+        .then((text) => {
+            // Paste the text into the input field
+            fetchedDataRequirements.forEach((el) => {
+                filteredData.push(el.lookFor(text))
+            })
+            createDataElements(filteredData);
+        })
+        .catch((err) => {
+            console.error("Unable to read clipboard data", err);
+        });
+}
+
+function createDataElements(dataObject) {
+    document.querySelectorAll(".results-container *").forEach(el=>{
+el.remove()
+})
+   document.querySelectorAll(".results-container").forEach(el=>{
+
+            el.remove()
+        })
+        
+    
+    
+    let resultsContainer = document.createElement("div")
+     resultsContainer.classList.add("results-container")
+    document.querySelector(".container").appendChild(resultsContainer)
+
+    dataObject.forEach(el=>{
+        let temporaryElement = document.createElement("p")
+        temporaryElement.textContent = el[0] + ": ";
+
+         el.splice(1).forEach(element=>{
+            let temporaryElementSpan = document.createElement("span")
+            temporaryElement.appendChild(temporaryElementSpan)
+            temporaryElementSpan.classList.add("copiable")
+
+            if(element.toString().toLowerCase() !== "n/a"){
+                temporaryElementSpan.classList.add("hoverable")
+                temporaryElementSpan.addEventListener("click", (x) => {
+                    copyToClipboard(x);
+                })
+        }
+            temporaryElementSpan.textContent = element
+         })
+         resultsContainer.appendChild(temporaryElement);
+    })
+}
+
+function copyToClipboard(e) {
+    const text = e.target.textContent
+    const textarea = document.createElement("textarea")
+    textarea.value = text
+    document.body.appendChild(textarea)
+    textarea.select()
+    document.execCommand("copy")
+    document.body.removeChild(textarea)
+    e.target.style.backgroundColor = "hsla(260, 40%, 80%, 1)"
+ e.target.style.color = "black"
+
+    setTimeout(() => {
+        e.target.style.backgroundColor = ""
+    e.target.style.color = "white"
+    }, 600)
+}
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+        </script>
+    </body>
+</html>
