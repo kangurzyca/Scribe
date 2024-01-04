@@ -119,95 +119,50 @@ class FetchedData {
     constructor(
         name,
         type,
-        isUppercase,
-        isCapitalize,
-        isDate,
+       
         regexRule,
-        hasMultipleOccurances,
-        wantFirstOccurance
+        
     ) {
         this.name = name;
         this.type = type;
-        this.isUppercase = isUppercase;
-        this.isCapitalize = isCapitalize;
-        this.isDate = isDate;
+        
         this.regexRule = new RegExp(regexRule);
-        this.hasMultipleOccurances = hasMultipleOccurances;
-        this.wantFirstOccurance = wantFirstOccurance;
+       
     }
     lookFor(source) {
         let barnFind = source.match(this.regexRule);
      //   console.log("barn find: ",barnFind)
         let result = [];
         result.push(this.name);
-        if(this.name === "Address Line 1"){
-            console.log(barnFind)
-        }
-
-        if (this.wantFirstOccurance) {
-            if (barnFind != null) {
-                result.push(barnFind[0])
-            } else {
-                result.push("n/a")
-            }
-         //   console.log("result: ", result)
-            return result
-        }
-        if (this.hasMultipleOccurances) {
-            if (barnFind == null) {
-                result.push("n/a")
-                return result
-            }
-            if(this.type === "phoneNumber"){
-                let array = []
-                barnFind.forEach((el) => {
-                    let temp = el.match(/\d+/)
-                    array.push(temp[0])
-                })
-                result.push(...array)
-               // console.log("result: ", result)
-                return result
-            }
-            if(this.type === "actone"){
-                let array = []
-                barnFind.forEach((el) => {
-                    let temp = el.match(/([\d,]+)/g)
-                    array.push(...temp[0].split(","))
-                    
-                })
-                result.push(...array)
-                //console.log("result: ", result)
-                return result
-            }
-            if(this.type === "products"){
+      
+           
+            // if(this.type === "products"){
                
-                let array = []
-                let temp = barnFind[0].match(/[^\s*]\w*/g)
-                for(let i = 0; i <= temp.length-2;i++){
-                    if(productsNames.map(el=>el.toLowerCase()).includes(temp[i].toLowerCase())){
-                        if(temp[i].toLowerCase()=="creditcard"){
-                            array.push(
-                                {
-                                "productName": temp[i],
-                                "cardNumber": temp[i+1],
-                                })
-                        }
-                        else{
-                            array.push(
-                                {
-                                "productName": temp[i],
-                                "sortcode": temp[i+1],
-                                "accountNumber": temp[i+2],
-                                }
-                            )
-                        }
-                    }
-                }
+            //     let array = []
+            //     let temp = barnFind[0].match(/[^\s*]\w*/g)
+            //     for(let i = 0; i <= temp.length-2;i++){
+            //         if(productsNames.map(el=>el.toLowerCase()).includes(temp[i].toLowerCase())){
+            //             if(temp[i].toLowerCase()=="creditcard"){
+            //                 array.push(
+            //                     {
+            //                     "productName": temp[i],
+                //                 "cardNumber": temp[i+1],
+                //                 })
+                //         }
+                //         else{
+                //             array.push(
+                //                 {
+                //                 "productName": temp[i],
+                //                 "sortcode": temp[i+1],
+                //                 "accountNumber": temp[i+2],
+                //                 }
+                //             )
+                //         }
+                //     }
+                // }
                 
-                result.push(...array)
-               // console.log("result: ", result)
-                return result
-            }
+              
+            
         }
         if (barnFind != null) {
             result.push(barnFind[1])
