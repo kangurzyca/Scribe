@@ -184,182 +184,105 @@ fetchedDataRequirements.push(
     new FetchedData(
         "Case Number",
         "caseNumber",
-        true,
-        false,
-        false,
         /EXT\d{10}/i,
-        false,
-        true
     )
 );
 fetchedDataRequirements.push(
     new FetchedData(
         "Brand",
         "brandName",
-        false,
-        true,
-        false,
         /(?:\bbrand\s+)(\w+)/i,
-        false,
-        false
     )
 );
 fetchedDataRequirements.push(
     new FetchedData(
         "CIN",
         "cin",
-        true,
-        false,
-        false,
         /\bCustomer\s+\bID\s+\D*(\d{10})/i,
-        false,
-        false
     )
 );
 fetchedDataRequirements.push(
     new FetchedData(
         "Title",
         "title",
-        false,
-        true,
-        false,
         /(?:\bTitle\s+)(\w+)/i,
-        false,
-        false
     )
 );
 fetchedDataRequirements.push(
     new FetchedData(
         "First Name",
         "firstName",
-        false,
-        true,
-        false,
         /(?:first\s+name\s+)(\w+(?:\s+\w+)?)/i,
-        false,
-        false
     )
 );
 fetchedDataRequirements.push(
     new FetchedData(
         "Middle Name",
         "middleName",
-        false,
-        true,
-        false,
         /(?:middle\s+name\s+)(\w+(?:\s+\w+)?)/i,
-        false,
-        false
     )
 );
 fetchedDataRequirements.push(
     new FetchedData(
         "Last Name",
         "lastName",
-        false,
-        true,
-        false,
         /(?:last\s+name\s+)(\w+(?:\s+\w+)?)/i,
-        false,
-        false
     )
 );
 fetchedDataRequirements.push(
     new FetchedData(
         "Address Line 1",
         "addressLineOne",
-        false,
-        true,
-        false,
         /address line 1\s*([\w\s]+)\s*address line 2/i,
-        false,
-        false
     )
 );
 fetchedDataRequirements.push(
     new FetchedData(
         "Address Line 2",
         "addressLineTwo",
-        false,
-        true,
-        false,
         /\baddress line 2\b\s*([\w\d\s]+)\s*\bcity\/town\b/i,
-        false,
-        false
     )
 );
 fetchedDataRequirements.push(
     new FetchedData(
         "City/Town",
         "addressTown",
-        false,
-        true,
-        false,
         /\bcity\/town\b\s*([\w\d\s]+)\s*\bpostcode\b/i,
-        false,
-        false
     )
 );
 fetchedDataRequirements.push(
     new FetchedData(
         "Postcode",
         "addressPostcode",
-        false,
-        true,
-        false,
         /\bpostcode\b\s*(\b[a-zA-Z0-9]{2,4}\s[a-zA-Z0-9]{3}\b)/i,
-
-        false,
-        false
     )
 );
 fetchedDataRequirements.push(
     new FetchedData(
         "Date of Birth",
         "dob",
-        false,
-        true,
-        false,
         /\bdate of birth\s*(\d{1,2}-[a-zA-Z]{3}-\d{4})\s*/,
-        false,
-        false
     )
 );
 fetchedDataRequirements.push(
     new FetchedData(
         "Phone Number",
         "phoneNumber",
-        false,
-        true,
-        false,
         /\bnumber\s*\(optional\)\s*((?:\d{11}|\+44\s?\d{12})(?:\s+(?:\d{11}|\+44\s?\d{12}))*)/g,
-
-        true,
-        false
     )
 )
 fetchedDataRequirements.push(
     new FetchedData(
         "ActOne Refrenece",
         "actone",
-        false,
-        true,
-        false,
         /reference\s*([\d,]*)\s*expiry/gi,
-        true,
-        false
     )
 )
 fetchedDataRequirements.push(
     new FetchedData(
         "Products",
         "products",
-        false,
-        true,
-        false,
         /((?<=expiry date)(.*))(?=account open)/gi,
-        true,
-        false
     )
 )
 
