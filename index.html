@@ -1,133 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Scribe the helpmate</title>
+        <link rel="stylesheet" href="./styles.css" />
+    </head>
+    <body>
+        <div class="container">
+            <input
+                type="button"
+                id="pasteTextHere"
+                onclick="pasteText()"
+                value="click to populate"
+            />
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Scribe the helpmate</title>
-    <style>
-        html:focus-within {
-            scroll-behavior: smooth;
-        }
+            <textarea class="notepad"></textarea>
+        </div>
 
-        html {
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        *,
-        *:before,
-        *:after {
-            box-sizing: inherit;
-        }
-
-        body,
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
-        p,
-        ol,
-        ul {
-            margin: 0;
-            padding: 0;
-            font-weight: normal;
-        }
-
-
-        body {
-            background-color: hsl(250, 10%, 25%);
-            color: white;
-            font-family: sans-serif;
-            padding: 10px;
-        }
-
-        #pasteTextHere {
-            padding: .5em 1.75em;
-            border-radius: 5px;
-            outline: none;
-            margin-bottom: 40px;
-
-        }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-width: 400px;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .copiable {
-            text-transform: capitalize;
-            color: hsl(250, 20%, 50%);
-            padding: 0 5px;
-            border-bottom: solid 1px hsla(260, 40%, 80%, 0);
-            transition: border ease .2s, background-color ease .6s, color ease .6s;
-            display: inline-block;
-        }
-
-        .copiable:hover {
-            cursor: default;
-        }
-
-        .hoverable {
-            color: white;
-        }
-
-        .hoverable:hover {
-            border-bottom-color: hsla(260, 40%, 80%, 1);
-            cursor: pointer;
-
-        }
-
-        /* .copiable:active{
-    background-color: hsla(260, 40%, 80%, 1);
-    color: black;
-} */
-        .results-container {
-            max-width: 400px;
-            border: 2px hsl(260, 40%, 70%) solid;
-            border-radius: 10px;
-            padding: 20px;
-
-        }
-
-        .results-container p {
-            margin-bottom: 5px;
-            color: hsl(260, 30%, 80%);
-        }
-
-        .notepad {
-            margin-top: 50px;
-            max-width: 350px;
-            min-height: 200px;
-            resize: vertical;
-            overflow: auto;
-            background-color: hsl(260, 10%, 40%);
-            color: white;
-            font-size: 16px;
-            border-radius: 10px;
-            display: block;
-            order: 1;
-            padding: 10px;
-            outline: 2px hsl(260, 40%, 70%) solid;
-        }
-    </style>
-</head>
-<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
-
-<body>
-    <div class="container">
-        <input type="button" id="pasteTextHere" onclick="pasteText()" value="click to populate" />
-
-        <textarea class="notepad"></textarea>
-    </div>
-
-    <script src="./index.js"></script>
-</body>
-
+        <script src="./index.js"></script>
+    </body>
 </html>
