@@ -1,0 +1,4 @@
+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
+
+to compile .ts to .js with locally installed TS use "npx ts <fileName>.ts"
+no need to change paths or install TS globally

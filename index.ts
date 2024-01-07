@@ -1,18 +1,22 @@
-const fetchedDataRequirements: FetchedData[] = [];
+const fetchedDataRequirements: IFetchedData[] = [];
 
-interface FetchedData {
+interface IFetchedData {
     name: string;
     type: string;
-    regexRule: any;
-    lookFor: (source: string) => string;
+   regexRule: any;
 }
+
 class FetchedData {
     constructor(name: string, type: string, regexRule: any) {
         this.name = name;
         this.type = type;
-
         this.regexRule = new RegExp(regexRule);
     }
+    // lookFor(source: string){
+    //     let result: string = source.match(this.regexRule)
+    //     console.log(result)
+    //     return "testString"
+    // }
 }
 
 let inputString: string =
@@ -22,92 +26,92 @@ let productsNames: string[] = ["MTA", "ISA", "BBLS", "BBILS", "CreditCard"];
 fetchedDataRequirements.push(
     new FetchedData("Case Number", "caseNumber", /EXT\d{10}/i)
 );
-fetchedDataRequirements.push(
-    new FetchedData("Brand", "brandName", /(?:\bbrand\s+)(\w+)/i)
-);
-fetchedDataRequirements.push(
-    new FetchedData("CIN", "cin", /\bCustomer\s+\bID\s+\D*(\d{10})/i)
-);
-fetchedDataRequirements.push(
-    new FetchedData("Title", "title", /(?:\bTitle\s+)(\w+)/i)
-);
-fetchedDataRequirements.push(
-    new FetchedData(
-        "First Name",
-        "firstName",
-        /(?:first\s+name\s+)(\w+(?:\s+\w+)?)/i
-    )
-);
-fetchedDataRequirements.push(
-    new FetchedData(
-        "Middle Name",
-        "middleName",
-        /(?:middle\s+name\s+)(\w+(?:\s+\w+)?)/i
-    )
-);
-fetchedDataRequirements.push(
-    new FetchedData(
-        "Last Name",
-        "lastName",
-        /(?:last\s+name\s+)(\w+(?:\s+\w+)?)/i
-    )
-);
-fetchedDataRequirements.push(
-    new FetchedData(
-        "Address Line 1",
-        "addressLineOne",
-        /address line 1\s*([\w\s]+)\s*address line 2/i
-    )
-);
-fetchedDataRequirements.push(
-    new FetchedData(
-        "Address Line 2",
-        "addressLineTwo",
-        /\baddress line 2\b\s*([\w\d\s]+)\s*\bcity\/town\b/i
-    )
-);
-fetchedDataRequirements.push(
-    new FetchedData(
-        "City/Town",
-        "addressTown",
-        /\bcity\/town\b\s*([\w\d\s]+)\s*\bpostcode\b/i
-    )
-);
-fetchedDataRequirements.push(
-    new FetchedData(
-        "Postcode",
-        "addressPostcode",
-        /\bpostcode\b\s*(\b[a-zA-Z0-9]{2,4}\s[a-zA-Z0-9]{3}\b)/i
-    )
-);
-fetchedDataRequirements.push(
-    new FetchedData(
-        "Date of Birth",
-        "dob",
-        /\bdate of birth\s*(\d{1,2}-[a-zA-Z]{3}-\d{4})\s*/
-    )
-);
-fetchedDataRequirements.push(
-    new FetchedData(
-        "Phone Number",
-        "phoneNumber",
-        /\bnumber\s*\(optional\)\s*((?:\d{11}|\+44\s?\d{12})(?:\s+(?:\d{11}|\+44\s?\d{12}))*)/g
-    )
-);
-fetchedDataRequirements.push(
-    new FetchedData(
-        "ActOne Refrenece",
-        "actone",
-        /reference\s*([\d,]*)\s*expiry/gi
-    )
-);
-fetchedDataRequirements.push(
-    new FetchedData(
-        "Products",
-        "products",
-        /((?<=expiry date)(.*))(?=account open)/gi
-    )
-);
+// fetchedDataRequirements.push(
+//     new FetchedData("Brand", "brandName", /(?:\bbrand\s+)(\w+)/i)
+// );
+// fetchedDataRequirements.push(
+//     new FetchedData("CIN", "cin", /\bCustomer\s+\bID\s+\D*(\d{10})/i)
+// );
+// fetchedDataRequirements.push(
+//     new FetchedData("Title", "title", "\\(?:\\bTitle\\s+)(\\w+)")
+// );
+// fetchedDataRequirements.push(
+//     new FetchedData(
+//         "First Name",
+//         "firstName",
+//       //  /(?:first\s+name\s+)(\w+(?:\s+\w+)?)/i
+//     )
+// );
+// fetchedDataRequirements.push(
+//     new FetchedData(
+//         "Middle Name",
+//         "middleName",
+//         /(?:middle\s+name\s+)(\w+(?:\s+\w+)?)/i
+//     )
+// );
+// fetchedDataRequirements.push(
+//     new FetchedData(
+//         "Last Name",
+//         "lastName",
+//         /(?:last\s+name\s+)(\w+(?:\s+\w+)?)/i
+//     )
+// );
+// fetchedDataRequirements.push(
+//     new FetchedData(
+//         "Address Line 1",
+//         "addressLineOne",
+//         /address line 1\s*([\w\s]+)\s*address line 2/i
+//     )
+// );
+// fetchedDataRequirements.push(
+//     new FetchedData(
+//         "Address Line 2",
+//         "addressLineTwo",
+//         /\baddress line 2\b\s*([\w\d\s]+)\s*\bcity\/town\b/i
+//     )
+// );
+// fetchedDataRequirements.push(
+//     new FetchedData(
+//         "City/Town",
+//         "addressTown",
+//         /\bcity\/town\b\s*([\w\d\s]+)\s*\bpostcode\b/i
+//     )
+// );
+// fetchedDataRequirements.push(
+//     new FetchedData(
+//         "Postcode",
+//         "addressPostcode",
+//         /\bpostcode\b\s*(\b[a-zA-Z0-9]{2,4}\s[a-zA-Z0-9]{3}\b)/i
+//     )
+// );
+// fetchedDataRequirements.push(
+//     new FetchedData(
+//         "Date of Birth",
+//         "dob",
+//         /\bdate of birth\s*(\d{1,2}-[a-zA-Z]{3}-\d{4})\s*/
+//     )
+// );
+// fetchedDataRequirements.push(
+//     new FetchedData(
+//         "Phone Number",
+//         "phoneNumber",
+//         /\bnumber\s*\(optional\)\s*((?:\d{11}|\+44\s?\d{12})(?:\s+(?:\d{11}|\+44\s?\d{12}))*)/g
+//     )
+// );
+// fetchedDataRequirements.push(
+//     new FetchedData(
+//         "ActOne Refrenece",
+//         "actone",
+//         /reference\s*([\d,]*)\s*expiry/gi
+//     )
+// );
+// fetchedDataRequirements.push(
+//     new FetchedData(
+//         "Products",
+//         "products",
+//         /((?<=expiry date)(.*))(?=account open)/gi
+//     )
+// );
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
@@ -122,18 +126,21 @@ function pasteText() {
     // Read text from the clipboard
     navigator.clipboard
         .readText()
-        .then((text) => {
+       .then((text) => {
+       
+
             // Paste the text into the input field
             fetchedDataRequirements.forEach((el) => {
+                let result = el.lookFor(inputString)
                 let temp: filteredDataInterface = {
                     name: el.name,
                     type: el.type,
-                    data: el.lookFor(text),
+                    data: result,
                 };
 
                 filteredData.push(temp);
             });
-            createDataElements(filteredData);
+           
         })
         .catch((err) => {
             console.error("Unable to read clipboard data", err);
@@ -159,19 +166,19 @@ function createDataElements(dataObject: filteredDataInterface[]) {
             document.createElement("p");
         temporaryElement.textContent = el.data + ": ";
 
-        el.splice(1).forEach((element) => {
-            let temporaryElementSpan = document.createElement("span");
-            temporaryElement.appendChild(temporaryElementSpan);
-            temporaryElementSpan.classList.add("copiable");
+        // el.splice(1).forEach((element) => {
+        //     let temporaryElementSpan = document.createElement("span");
+        //     temporaryElement.appendChild(temporaryElementSpan);
+        //     temporaryElementSpan.classList.add("copiable");
 
-            if (element.toString().toLowerCase() !== "n/a") {
-                temporaryElementSpan.classList.add("hoverable");
-                temporaryElementSpan.addEventListener("click", (x) => {
-                    copyToClipboard(x);
-                });
-            }
-            temporaryElementSpan.textContent = element;
-        });
+        //     if (element.toString().toLowerCase() !== "n/a") {
+        //         temporaryElementSpan.classList.add("hoverable");
+        //         temporaryElementSpan.addEventListener("click", (x) => {
+        //             copyToClipboard(x);
+        //         });
+        //     }
+        //     temporaryElementSpan.textContent = element;
+        // });
         resultsContainer.appendChild(temporaryElement);
     });
 }
