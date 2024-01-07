@@ -3,32 +3,24 @@ const fetchedDataRequirements: IFetchedData[] = [];
 interface IFetchedData {
     name: string;
     type: string;
-   regexRule: any;
+    regexRule: any;
 }
 
-class FetchedData {
-    constructor(name: string, type: string, regexRule: any) {
-        this.name = name;
-        this.type = type;
-        this.regexRule = new RegExp(regexRule);
-    }
-    // lookFor(source: string){
-    //     let result: string = source.match(this.regexRule)
-    //     console.log(result)
-    //     return "testString"
-    // }
-}
 
 let inputString: string =
     "Exit ID asdkfj asd 22-feb-2021 EXT1234567890 aasstop pause, extend on hold,      brand       Paribas kartofle  Customer ID (CIN)     2244668819 cala masa         ronz234234 23456 r2 2 Title         Mr. next another thing   address line 1 1 beck Avenue de rue 1         address Line 2 warwick self church   ciTY/tOwn marlborough postcode we4 cj7              first name Mc SHISH ashfd EXT0987654321 last name de AZAZ 43 4 fdf date of birth   12-feb-2023    telephone number (optional) 02345678901   fax number (optional) 56473829102 mobile number (optional) +442243568920 mobile number (optional) 44275937584632  ActOne reference 13245212,12345678,23487961,123024561,119900311,52345567547  expiry date MTA 123234 12345678 No ISA 223234 2345623 Yes CreditCard 57685768576857685 No account open";
 let productsNames: string[] = ["MTA", "ISA", "BBLS", "BBILS", "CreditCard"];
 
-fetchedDataRequirements.push(
-    new FetchedData("Case Number", "caseNumber", /EXT\d{10}/i)
-);
-// fetchedDataRequirements.push(
-//     new FetchedData("Brand", "brandName", /(?:\bbrand\s+)(\w+)/i)
-// );
+fetchedDataRequirements.push({ name: "Case Number", type: "caseNumber", regexRule: "EXT\\d{10}" })
+
+fetchedDataRequirements.push({ name: "Brand", type: "brandName", regexRule: "/(?:\\bbrand\\s+)(\\w+)/i" })
+
+function searchText(inputData: IFetchedData): string{
+    console.log(inputData.name)
+ return "placki"
+}
+searchText(fetchedDataRequirements[1])
+
 // fetchedDataRequirements.push(
 //     new FetchedData("CIN", "cin", /\bCustomer\s+\bID\s+\D*(\d{10})/i)
 // );
@@ -126,21 +118,8 @@ function pasteText() {
     // Read text from the clipboard
     navigator.clipboard
         .readText()
-       .then((text) => {
-       
-
-            // Paste the text into the input field
-            fetchedDataRequirements.forEach((el) => {
-                let result = el.lookFor(inputString)
-                let temp: filteredDataInterface = {
-                    name: el.name,
-                    type: el.type,
-                    data: result,
-                };
-
-                filteredData.push(temp);
-            });
-           
+        .then((text) => {
+            console.log(text)
         })
         .catch((err) => {
             console.error("Unable to read clipboard data", err);
