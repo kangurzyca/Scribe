@@ -1,14 +1,11 @@
-import requiredData from "./requiredData"
+import { requiredData } from "./requiredData.js"
+import { IFetchedData, IFilteredData } from "./interfaces.js"
 console.log(requiredData)
 
 
 const fetchedDataRequirements: IFetchedData[] = [];
 
-interface IFetchedData {
-    name: string;
-    type: string;
-    regexRule: any;
-}
+
 
 
 let inputString: string =
@@ -56,12 +53,8 @@ fetchedDataRequirements.forEach(el=>{
 })
 
 
-interface filteredDataInterface {
-    name: string;
-    type: string;
-    data: string;
-}
-let filteredData: filteredDataInterface[] = [];
+
+let filteredData: IFilteredData[] = [];
 
 function pasteText() {
     // Read text from the clipboard
@@ -75,7 +68,7 @@ function pasteText() {
         });
 }
 
-function createDataElements(dataObject: filteredDataInterface[]) {
+function createDataElements(dataObject: IFilteredData[]) {
     document.querySelectorAll(".results-container *").forEach((el) => {
         el.remove();
     });
@@ -111,19 +104,19 @@ function createDataElements(dataObject: filteredDataInterface[]) {
     });
 }
 
-function copyToClipboard(e) {
-    const text = e.target.textContent;
-    const textarea = document.createElement("textarea");
-    textarea.value = text;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textarea);
-    e.target.style.backgroundColor = "hsla(260, 40%, 80%, 1)";
-    e.target.style.color = "black";
+// function copyToClipboard(e) {
+//     const text = e.target.textContent;
+//     const textarea = document.createElement("textarea");
+//     textarea.value = text;
+//     document.body.appendChild(textarea);
+//     textarea.select();
+//     document.execCommand("copy");
+//     document.body.removeChild(textarea);
+//     e.target.style.backgroundColor = "hsla(260, 40%, 80%, 1)";
+//     e.target.style.color = "black";
 
-    setTimeout(() => {
-        e.target.style.backgroundColor = "";
-        e.target.style.color = "white";
-    }, 600);
-}
+//     setTimeout(() => {
+//         e.target.style.backgroundColor = "";
+//         e.target.style.color = "white";
+//     }, 600);
+// }

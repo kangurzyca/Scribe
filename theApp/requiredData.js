@@ -1,4 +1,4 @@
-var requiredData = [
+export const requiredData = [
     {
         name: "Case Number",
         type: "caseNumber",
@@ -15,6 +15,16 @@ var requiredData = [
         regexRule: new RegExp("\\bCustomer\\s+\\bID\\s+\\D*(\\d{10})", "i"),
     },
     {
+        name: "Case level",
+        type: "caseLevel",
+        regexRule: new RegExp("(?:\\bfinancialcrimeconcern\\s+)(\\w+)", "i"),
+    },
+    {
+        name: "Business Name",
+        type: "businessName",
+        regexRule: new RegExp("(?:\\bbrand\\s+)(\\w+)", "i"),
+    },
+    {
         name: "Title",
         type: "title",
         regexRule: new RegExp("\\b(?:\\bTitle\\s+)(\\w+)", "i"),
@@ -22,12 +32,12 @@ var requiredData = [
     {
         name: "First Name",
         type: "firstName",
-        regexRule: new RegExp("(?:first\\s+name\\s+)(\\w+(?:\\s+\\w+)?", "i"),
+        regexRule: new RegExp("\\b(?:first\\s+name\\s+)(\\w+(?:\\s+\\w+)?)", "i"),
     },
     {
         name: "Middle Name",
         type: "middleName",
-        regexRule: new RegExp("(?:first\\s+name\\s+)(\\w+(?:\\s+\\w+)?)", "i"),
+        regexRule: new RegExp("(?:middle\\s+name\\s+)(\\w+(?:\\s+\\w+)?)", "i"),
     },
     {
         name: "Last Name",
@@ -65,7 +75,7 @@ var requiredData = [
         regexRule: new RegExp("\\bnumbers*\\(optional\\)\\s*((?:\\d{11}|\\+44\\s?\\d{12})(?:\\s+(?:\\d{11}|\\+44\\s?\\d{12}))*)", "g"),
     },
     {
-        name: "ActOne Refrenece",
+        name: "ActOne Reference",
         type: "actone",
         regexRule: new RegExp("reference\\s*([\\d,]*)\\s*expiry", "gi"),
     },
@@ -76,4 +86,3 @@ var requiredData = [
     },
 ];
 // fetchedDataRequirements.push({name: "", type: "", regexRule: new RegExp("", "i")})
-module.exports = requiredData;

@@ -1,4 +1,12 @@
 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
 
-to compile .ts to .js with locally installed TS use "npx ts <fileName>.ts"
+1. to compile .ts to .js with locally installed TS use "npx ts <fileName>.ts"
 no need to change paths or install TS globally
+
+2. added scripts for npm - build and start to build TS and generate js files in a separate location.
+
+3. Added type: module in package.json file.
+
+4. in tsconfing file added module: nodenext for some reason. Also outdir to generate js file in seprate folder and declaration files for some reason as well.
+
+5. npm run build and npm start seem to bundle tthings and then ran everything in terminal as I used to do some long time ago.

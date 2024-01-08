@@ -1,4 +1,6 @@
-const requiredData = [
+import { IFetchedData } from "./interfaces.js"
+
+export const requiredData: IFetchedData[]= [
     {
         name: "Case Number",
         type: "caseNumber",
@@ -15,6 +17,16 @@ const requiredData = [
         regexRule: new RegExp("\\bCustomer\\s+\\bID\\s+\\D*(\\d{10})", "i"),
     },
     {
+        name: "Case level",
+        type: "caseLevel",
+        regexRule: new RegExp("(?:\\bfinancialcrimeconcern\\s+)(\\w+)", "i"),
+    },
+    {
+        name: "Business Name",
+        type: "businessName",
+        regexRule: new RegExp("(?:\\bbrand\\s+)(\\w+)", "i"),
+    },
+    {
         name: "Title",
         type: "title",
         regexRule: new RegExp("\\b(?:\\bTitle\\s+)(\\w+)", "i"),
@@ -23,12 +35,12 @@ const requiredData = [
     {
         name: "First Name",
         type: "firstName",
-        regexRule: new RegExp("(?:first\\s+name\\s+)(\\w+(?:\\s+\\w+)?", "i"),
+        regexRule: new RegExp("\\b(?:first\\s+name\\s+)(\\w+(?:\\s+\\w+)?)", "i"),
     },
     {
         name: "Middle Name",
         type: "middleName",
-        regexRule: new RegExp("(?:first\\s+name\\s+)(\\w+(?:\\s+\\w+)?)", "i"),
+        regexRule: new RegExp("(?:middle\\s+name\\s+)(\\w+(?:\\s+\\w+)?)", "i"),
     },
 
     {
@@ -86,7 +98,7 @@ const requiredData = [
         ),
     },
     {
-        name: "ActOne Refrenece",
+        name: "ActOne Reference",
         type: "actone",
         regexRule: new RegExp("reference\\s*([\\d,]*)\\s*expiry", "gi"),
     },
@@ -98,5 +110,3 @@ const requiredData = [
 ];
 
 // fetchedDataRequirements.push({name: "", type: "", regexRule: new RegExp("", "i")})
-
-export default requiredData
