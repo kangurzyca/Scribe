@@ -1,2 +1,2 @@
-# exit-case-assistant-tool
-ECAT - made to assist exit analysts
+# scribe-the-helpmate
+Made to assist exit analysts
