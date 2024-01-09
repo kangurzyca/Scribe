@@ -1,13 +1,13 @@
-interface IFetchedData {
+interface IRequiredData {
     name: string;
     type: string;
     regexRule: any;
 }
 
-interface IFilteredData {
+interface IPreFilteredData {
     name: string;
     type: string;
-    data: string;
+    data?: any;
 }
 
-export { IFetchedData, IFilteredData }
+export { IRequiredData, IPreFilteredData }

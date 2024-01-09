@@ -1,6 +1,6 @@
-import { IFetchedData } from "./interfaces.js"
+import { IRequiredData } from "./interfaces.js"
 
-export const requiredData: IFetchedData[]= [
+export const requiredData: IRequiredData[]= [
     {
         name: "Case Number",
         type: "caseNumber",

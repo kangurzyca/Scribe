@@ -1,2 +1,2 @@
-import { IFetchedData } from "./interfaces.js";
-export declare const requiredData: IFetchedData[];
+import { IRequiredData } from "./interfaces.js";
+export declare const requiredData: IRequiredData[];
