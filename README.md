@@ -1,2 +1,2 @@
-# scribe-the-helpmate
+# Meet your scribe
 Made to assist exit analysts
