@@ -78,10 +78,7 @@ export const requiredData: IRequiredData[]= [
     {
         name: "Phone Number",
         type: "phoneNumber",
-        regexRule: new RegExp(
-            "\\b(?:\\+?\\d{10,}|\\(\\d{5,}\\)\\s?\\d{5,}|\\d{11,})\\b",
-            "g"
-        ),
+        regexRule: new RegExp("telephone number \\(optional\\)(.*?)actone reference", "i"),
     },
     {
         name: "ActOne Reference",
