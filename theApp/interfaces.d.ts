@@ -6,6 +6,6 @@ interface IRequiredData {
 interface IPreFilteredData {
     name: string;
     type: string;
-    data?: any;
+    data?: string;
 }
 export { IRequiredData, IPreFilteredData };
