@@ -16,6 +16,16 @@ export const requiredData: IRequiredData[]= [
         type: "cin",
         regexRule: new RegExp("customer\\s+id\\s+\\(cin\\)\\s+(\\d{10})\\s+customer\\s+status", "i"),
     },
+     {
+        name: "Owning Franchise",
+        type: "owningFranchise",
+        regexRule: new RegExp("(?:\\bCustomer owning franchise\\s+)(\\w+(?:\\s+\\w+)*)\\s+Brand", "i"),
+    },
+     {
+        name: "Decision Franchise",
+        type: "decisionFranchise",
+        regexRule: new RegExp("(?:\\bDecision making franchise\\s+)(\\w+(?:\\s+\\w+)*)\\s+Exit Referral Receipt Date", "i"),
+    },
     {
         name: "Case level",
         type: "caseLevel",
@@ -78,7 +88,7 @@ export const requiredData: IRequiredData[]= [
     {
         name: "Phone Number",
         type: "phoneNumber",
-        regexRule: new RegExp("telephone number \\(optional\\)(.*?)actone reference", "i"),
+        regexRule: new RegExp("telephone number \\(optional\\)(.*?)Email Address \\(Optional\\)", "i"),
     },
     {
         name: "ActOne Reference",
@@ -88,7 +98,7 @@ export const requiredData: IRequiredData[]= [
     {
         name: "Products",
         type: "products",
-        regexRule: new RegExp("((?<=expiry date)(.*))(?=account open)", "gi"),
+        regexRule: new RegExp("products\\s*(.*?)\\s*showing", "i"),
     },
 ];
 
