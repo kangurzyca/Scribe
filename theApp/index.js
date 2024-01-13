@@ -35,7 +35,7 @@ function searchTextForData(inputData) {
             console.log(inputString.match(el.regexRule));
         }
     });
-    console.log(preFilteredData);
+    getPhoneNumbers(preFilteredData);
     return "placki";
 }
 //------------------------------------------------------------
@@ -50,6 +50,26 @@ function pasteText() {
         .catch((err) => {
         console.error("Unable to read clipboard data", err);
     });
+}
+function getPhoneNumbers(inputData) {
+    let phoneNumbersRegex = new RegExp("(?:\\+?\\d{2}\\s*|0\\s*)?\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d", "gi");
+    let phoneNumbers;
+    // find phone nubmers in 
+    inputData.forEach(el => {
+        var _a, _b;
+        for (const [key, value] of Object.entries(el)) {
+            if (key === "type" && value === "phoneNumber") {
+                if (typeof ((_a = el.data) === null || _a === void 0 ? void 0 : _a.match(phoneNumbersRegex !== ("null" || "undefined"))))
+                    phoneNumbers = (_b = el.data) === null || _b === void 0 ? void 0 : _b.match(phoneNumbersRegex);
+            }
+        }
+    });
+    //get numbers strings in prefiltered data
+    //filter
+    //extract numbers
+    //put numbers in an array with a correct formatting, no spaces no prefixes.
+    //if the prefix is not +44 nor 0 save a number with this prefix.
+    return 3;
 }
 function createDataElements(dataObject) {
     var _a;

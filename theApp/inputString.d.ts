@@ -1,1 +1,1 @@
-export declare let inputString: string;
+export {};
