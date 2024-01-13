@@ -56,7 +56,29 @@ function searchTextForData(inputData: IRequiredData[]): string{
 }
 
 
+function getPhoneNumbers(inputData: IPreFilteredData[]): number{
+    let phoneNumbersRegex: any = new RegExp("(?:\\+?\\d{2}\\s*|0\\s*)?\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d", "gi")
+    let phoneNumbers: string[]
+    // find phone nubmers in 
+    inputData.forEach(el=>{
+        for(const [key, value] of Object.entries(el)){
+            if (key === "type" && value === "phoneNumber"){
+               if(typeof el.data?.match(phoneNumbersRegex !== ("null" || "undefined"))
+                phoneNumbers = el.data?.match(phoneNumbersRegex)
 
+
+                
+            }
+        }
+
+    })
+    //get numbers strings in prefiltered data
+    //filter
+    //extract numbers
+    //put numbers in an array with a correct formatting, no spaces no prefixes.
+    //if the prefix is not +44 nor 0 save a number with this prefix.
+return 3
+}
 
 
 //------------------------------------------------------------
