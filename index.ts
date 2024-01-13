@@ -1,5 +1,5 @@
 import { requiredData } from "./requiredData.js"
-import { IRequiredData, IPreFilteredData } from "./interfaces.js"
+import { IRequiredData, IPreFilteredData, IPhoneNumbers} from "./interfaces.js"
 import {inputString} from "./inputString.js"
 
 const preFilteredData: IPreFilteredData[] = [];
@@ -73,29 +73,38 @@ function pasteText() {
         });
 }
 
-function getPhoneNumbers(inputData: IPreFilteredData[]): number{
+function getPhoneNumbers(inputData: IPreFilteredData[]): 3{
     let phoneNumbersRegex: any = new RegExp("(?:\\+?\\d{2}\\s*|0\\s*)?\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d", "gi")
-    let phoneNumbers: string[]
+
+
+    let phoneNumbers: IPhoneNumbers
+
     // find phone nubmers in 
     inputData.forEach(el=>{
-        for(const [key, value] of Object.entries(el)){
+        for (const [key, value] of Object.entries(el)){
+
             if (key === "type" && value === "phoneNumber"){
-               if(typeof el.data?.match(phoneNumbersRegex !== ("null" || "undefined"))
-                phoneNumbers = el.data?.match(phoneNumbersRegex)
-
-
-                
+            
+                phoneNumbers.data = el.data?.match(phoneNumbersRegex) || []
+                phoneNumbers.name = el.name
+                phoneNumbers.type = el.type
             }
         }
-
     })
+
+
+
+
+    return 3
+}    
+
+
     //get numbers strings in prefiltered data
     //filter
     //extract numbers
     //put numbers in an array with a correct formatting, no spaces no prefixes.
     //if the prefix is not +44 nor 0 save a number with this prefix.
-return 3
-}
+
 
 function createDataElements(dataObject: IPreFilteredData[]) {
     document.querySelectorAll(".results-container *").forEach((el) => {

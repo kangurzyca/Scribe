@@ -56,21 +56,22 @@ function getPhoneNumbers(inputData) {
     let phoneNumbers;
     // find phone nubmers in 
     inputData.forEach(el => {
-        var _a, _b;
+        var _a;
         for (const [key, value] of Object.entries(el)) {
             if (key === "type" && value === "phoneNumber") {
-                if (typeof ((_a = el.data) === null || _a === void 0 ? void 0 : _a.match(phoneNumbersRegex !== ("null" || "undefined"))))
-                    phoneNumbers = (_b = el.data) === null || _b === void 0 ? void 0 : _b.match(phoneNumbersRegex);
+                phoneNumbers.data = ((_a = el.data) === null || _a === void 0 ? void 0 : _a.match(phoneNumbersRegex)) || [];
+                phoneNumbers.name = el.name;
+                phoneNumbers.type = el.type;
             }
         }
     });
-    //get numbers strings in prefiltered data
-    //filter
-    //extract numbers
-    //put numbers in an array with a correct formatting, no spaces no prefixes.
-    //if the prefix is not +44 nor 0 save a number with this prefix.
     return 3;
 }
+//get numbers strings in prefiltered data
+//filter
+//extract numbers
+//put numbers in an array with a correct formatting, no spaces no prefixes.
+//if the prefix is not +44 nor 0 save a number with this prefix.
 function createDataElements(dataObject) {
     var _a;
     document.querySelectorAll(".results-container *").forEach((el) => {

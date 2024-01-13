@@ -8,4 +8,9 @@ interface IPreFilteredData {
     type: string;
     data?: string;
 }
-export { IRequiredData, IPreFilteredData };
+interface IPhoneNumbers {
+    name: string;
+    type: string;
+    data: string[];
+}
+export { IPhoneNumbers, IRequiredData, IPreFilteredData };
