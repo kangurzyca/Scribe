@@ -49,12 +49,29 @@ function searchTextForData(inputData: IRequiredData[]): string{
 
     })
 
-    console.log(preFilteredData)
+    getPhoneNumbers(preFilteredData)
 
 
  return "placki"
 }
 
+
+
+
+
+//------------------------------------------------------------
+function pasteText() {
+    // Read text from the clipboard
+    navigator.clipboard
+        .readText()
+        .then((text) => {
+           // console.log(text)
+           searchTextForData(requiredData)
+        })
+        .catch((err) => {
+            console.error("Unable to read clipboard data", err);
+        });
+}
 
 function getPhoneNumbers(inputData: IPreFilteredData[]): number{
     let phoneNumbersRegex: any = new RegExp("(?:\\+?\\d{2}\\s*|0\\s*)?\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d", "gi")
@@ -78,21 +95,6 @@ function getPhoneNumbers(inputData: IPreFilteredData[]): number{
     //put numbers in an array with a correct formatting, no spaces no prefixes.
     //if the prefix is not +44 nor 0 save a number with this prefix.
 return 3
-}
-
-
-//------------------------------------------------------------
-function pasteText() {
-    // Read text from the clipboard
-    navigator.clipboard
-        .readText()
-        .then((text) => {
-           // console.log(text)
-           searchTextForData(requiredData)
-        })
-        .catch((err) => {
-            console.error("Unable to read clipboard data", err);
-        });
 }
 
 function createDataElements(dataObject: IPreFilteredData[]) {
