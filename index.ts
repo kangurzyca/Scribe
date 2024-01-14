@@ -49,7 +49,7 @@ function searchTextForData(inputData: IRequiredData[]): string{
 
     })
 
-    getPhoneNumbers(preFilteredData)
+    formatPhoneNumbers(preFilteredData)
 
 
  return "placki"
@@ -73,37 +73,49 @@ function pasteText() {
         });
 }
 
-function getPhoneNumbers(inputData: IPreFilteredData[]): 3{
+function formatPhoneNumbers(inputData: IPreFilteredData[]): IPhoneNumbers{
     let phoneNumbersRegex: any = new RegExp("(?:\\+?\\d{2}\\s*|0\\s*)?\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d", "gi")
 
-
-    let phoneNumbers: IPhoneNumbers
-
+    let phoneNumbers: IPhoneNumbers ={
+             name: "",
+      type: "",
+      data: [""]
+    }   
+    
     // find phone nubmers in 
     inputData.forEach(el=>{
         for (const [key, value] of Object.entries(el)){
-
             if (key === "type" && value === "phoneNumber"){
-            
                 phoneNumbers.data = el.data?.match(phoneNumbersRegex) || []
                 phoneNumbers.name = el.name
                 phoneNumbers.type = el.type
             }
         }
     })
+ //put numbers in an array with no spaces.
+    phoneNumbers.data?.forEach((el, index)=>{
+        phoneNumbers.data[index] = el.replace(new RegExp("\\s", "g"), "")
+    })
+//put numbers in an array with no prefixes.
+    phoneNumbers.data?.forEach((el, index)=>{
+        if(el[0]==="0"){
+            phoneNumbers.data[index] = el.unshift()
+        }
+       
+    })
+
+
+    //if the prefix is not +44 nor 0 save a number with this prefix.
 
 
 
 
-    return 3
+    return phoneNumbers
 }    
 
 
-    //get numbers strings in prefiltered data
-    //filter
-    //extract numbers
-    //put numbers in an array with a correct formatting, no spaces no prefixes.
-    //if the prefix is not +44 nor 0 save a number with this prefix.
+    
+   
 
 
 function createDataElements(dataObject: IPreFilteredData[]) {

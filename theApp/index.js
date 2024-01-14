@@ -53,7 +53,11 @@ function pasteText() {
 }
 function getPhoneNumbers(inputData) {
     let phoneNumbersRegex = new RegExp("(?:\\+?\\d{2}\\s*|0\\s*)?\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d", "gi");
-    let phoneNumbers;
+    let phoneNumbers = {
+        name: "",
+        type: "",
+        data: [""]
+    };
     // find phone nubmers in 
     inputData.forEach(el => {
         var _a;
@@ -65,7 +69,7 @@ function getPhoneNumbers(inputData) {
             }
         }
     });
-    return 3;
+    return phoneNumbers;
 }
 //get numbers strings in prefiltered data
 //filter
