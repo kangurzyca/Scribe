@@ -15,4 +15,15 @@ interface IPhoneNumbers {
     data: string[]
 }
 
-export { IPhoneNumbers, IRequiredData, IPreFilteredData }
+interface IProducts{
+     name: string;
+    type: string;
+    data: {
+        productName: string;
+        productNumber: string;
+        productSortCode: string;
+        isProductOpen: boolean;
+    }[]
+}
+
+export { IProducts, IPhoneNumbers, IRequiredData, IPreFilteredData }

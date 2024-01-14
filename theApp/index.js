@@ -35,7 +35,7 @@ function searchTextForData(inputData) {
             console.log(inputString.match(el.regexRule));
         }
     });
-    getPhoneNumbers(preFilteredData);
+    formatPhoneNumbers(preFilteredData);
     return "placki";
 }
 //------------------------------------------------------------
@@ -51,7 +51,8 @@ function pasteText() {
         console.error("Unable to read clipboard data", err);
     });
 }
-function getPhoneNumbers(inputData) {
+function formatPhoneNumbers(inputData) {
+    var _a, _b;
     let phoneNumbersRegex = new RegExp("(?:\\+?\\d{2}\\s*|0\\s*)?\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d", "gi");
     let phoneNumbers = {
         name: "",
@@ -69,13 +70,54 @@ function getPhoneNumbers(inputData) {
             }
         }
     });
+    //put numbers in an array with no spaces.
+    (_a = phoneNumbers.data) === null || _a === void 0 ? void 0 : _a.forEach((el, index) => {
+        phoneNumbers.data[index] = el.replace(new RegExp("\\s", "g"), "");
+    });
+    //put numbers in an array with no prefixes - no zeros and +44s, others have to be kept.
+    (_b = phoneNumbers.data) === null || _b === void 0 ? void 0 : _b.forEach((el, index) => {
+        if (el[0] === "0") {
+            phoneNumbers.data[index] = el.slice(1, el.length);
+        }
+        if (el[0] === "+" && el[1] === "4" && el[2] === "4" && el.length === 13) {
+            phoneNumbers.data[index] = el.slice(3, el.length);
+        }
+    });
     return phoneNumbers;
 }
-//get numbers strings in prefiltered data
-//filter
-//extract numbers
-//put numbers in an array with a correct formatting, no spaces no prefixes.
-//if the prefix is not +44 nor 0 save a number with this prefix.
+function formatProducts(inputData) {
+    let producutsRegexLevelTwo = new RegExp("\\b(\\d{8,8}\\s\\d{6,6}|\\d{16,16})\\s(.*?)(?=\\b\\d{8,8}\\s\\d{6,6}|\\b\\d{16,16}$)", "gi");
+    let productNumberRegex = new RegExp("\\d\\d\\d\\d\\d\\d\\d\\d|\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d");
+    let productSortCodeRegex = new RegExp("\\d\\d\\d\\d\\d\\d");
+    let productIsOpen = "string.filter(account open) or something";
+    let productName = "productsNames.forEach(el=productsstring.filter(e)?thenproducts name = el.";
+    let products = {
+        name: "",
+        type: "",
+        data: [],
+    };
+    inputData.forEach(el => {
+        for (const [key, value] of Object.entries(el)) {
+            if (key === "type" && value === "products") {
+                products.name = el.name;
+                products.type = el.type;
+            }
+        }
+    });
+    return 3;
+}
+function formatActoneReferences(inputData) {
+    let actoneReferences = [];
+    inputData.forEach(el => {
+        var _a;
+        for (const [key, value] of Object.entries(el)) {
+            if (key === "type" && value === "actone") {
+                actoneReferences = ((_a = el.data) === null || _a === void 0 ? void 0 : _a.split(",")) || [];
+            }
+        }
+    });
+    return 3;
+}
 function createDataElements(dataObject) {
     var _a;
     document.querySelectorAll(".results-container *").forEach((el) => {

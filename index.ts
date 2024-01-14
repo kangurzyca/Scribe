@@ -1,5 +1,5 @@
 import { requiredData } from "./requiredData.js"
-import { IRequiredData, IPreFilteredData, IPhoneNumbers} from "./interfaces.js"
+import { IProducts, IPhoneNumbers, IRequiredData, IPreFilteredData } from "./interfaces.js"
 import {inputString} from "./inputString.js"
 
 const preFilteredData: IPreFilteredData[] = [];
@@ -96,22 +96,65 @@ function formatPhoneNumbers(inputData: IPreFilteredData[]): IPhoneNumbers{
     phoneNumbers.data?.forEach((el, index)=>{
         phoneNumbers.data[index] = el.replace(new RegExp("\\s", "g"), "")
     })
-//put numbers in an array with no prefixes.
+//put numbers in an array with no prefixes - no zeros and +44s, others have to be kept.
     phoneNumbers.data?.forEach((el, index)=>{
         if(el[0]==="0"){
-            phoneNumbers.data[index] = el.unshift()
+            phoneNumbers.data[index] = el.slice(1, el.length)
+        }
+        if (el[0] === "+" &&el[1]==="4"  &&el[2]==="4" && el.length === 13){
+            phoneNumbers.data[index] = el.slice(3, el.length)
         }
        
     })
-
-
-    //if the prefix is not +44 nor 0 save a number with this prefix.
-
-
-
-
-    return phoneNumbers
+     return phoneNumbers
 }    
+
+function formatProducts(inputData: IPreFilteredData[]): number{
+
+    let producutsRegexLevelTwo: any = new RegExp("\\b(\\d{8,8}\\s\\d{6,6}|\\d{16,16})\\s(.*?)(?=\\b\\d{8,8}\\s\\d{6,6}|\\b\\d{16,16}$)", "gi")
+
+    let productNumberRegex = new RegExp("\\d\\d\\d\\d\\d\\d\\d\\d|\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d")
+    let productSortCodeRegex = new RegExp("\\d\\d\\d\\d\\d\\d")
+
+    let productIsOpen = "string.filter(account open) or something"
+    let productName = "productsNames.forEach(el=productsstring.filter(e)?thenproducts name = el."
+
+    let products: IProducts = {
+     name: "",
+    type: "",
+    data: [],
+}
+
+    inputData.forEach(el=>{
+        for(const [key, value] of Object.entries(el)){
+            if(key === "type" && value === "products"){
+                products.name = el.name
+                products.type = el.type
+            }
+        }
+    })
+
+
+
+    return 3
+}
+
+function formatActoneReferences(inputData: IPreFilteredData[]): number{
+   
+    let actoneReferences: string[] = []
+
+    inputData.forEach(el=>{
+        for(const [key, value] of Object.entries(el)){
+            if(key === "type" && value === "actone"){
+              actoneReferences = el.data?.split(",")|| []
+            }
+        }
+    })
+
+
+
+    return 3
+}
 
 
     
