@@ -1,7 +1,8 @@
 import { requiredData } from "./requiredData.js";
 import { inputString } from "./inputString.js";
 const preFilteredData = [];
-let productsNames = ["MTA", "ISA", "BBLS", "BBILS", "CreditCard", "CBILS", "CLBILS", "RLS", "EFG", "unsecured loan", "investment", "investments"];
+let allProductsNames = ["MTA", "ISA", "BBLS", "BBILS", "CreditCard", "CBILS", "CLBILS", "RLS", "EFG", "unsecured loan", "investment", "investments"];
+//MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments
 if (typeof document !== "undefined") {
     const pasteTextHere = document.getElementById("pasteTextHere");
     pasteTextHere === null || pasteTextHere === void 0 ? void 0 : pasteTextHere.addEventListener("click", () => {
@@ -29,10 +30,6 @@ function searchTextForData(inputData) {
         }
         if ((inputString.match(el.regexRule) === null)) {
             temp.data = "n/a";
-        }
-        preFilteredData.push(temp);
-        if (el.type === "phoneNumber") {
-            console.log(inputString.match(el.regexRule));
         }
     });
     formatPhoneNumbers(preFilteredData);
@@ -84,15 +81,14 @@ function formatPhoneNumbers(inputData) {
             phoneNumbers.data[index] = el.slice(3, el.length);
         }
     });
-    console.log(phoneNumbers);
     return phoneNumbers;
 }
 function formatProducts(inputData) {
-    let producutsRegexLevelTwo = new RegExp("\\b(\\d{8,8}\\s\\d{6,6}|\\d{16,16})\\s(.*?)(?=(\\b(?:\\d+|$)))", "gi");
-    let productNumberRegex = new RegExp("\\d\\d\\d\\d\\d\\d\\d\\d|\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d", "g");
-    let productSortCodeRegex = new RegExp("\\d\\d\\d\\d\\d\\d");
-    let productIsOpen = "string.filter(account open) or something";
-    let productName = "productsNames.forEach(el=productsstring.filter(e)?thenproducts name = el.";
+    let producutsRegexLevelTwo = new RegExp("\\b(?:mta|cba)\\d{8}(?: \\d{6}|\\d{16})?\\b[\\s\\w]*?(?=\\b(?:mta|cba)\\d{8}(?: \\d{6}|\\d{16})?\\b|$)", "gi");
+    let productNumberRegex = new RegExp("\\b\\d{8,8}\\b|\\b\\d{16,16}\\b", "g");
+    let productSortCodeRegex = new RegExp("\\b\\d{6,6}\\b", "g");
+    let isProductOpen = false;
+    let productName = "";
     //below is target function output
     let products = {
         name: "",
@@ -100,22 +96,35 @@ function formatProducts(inputData) {
         data: [],
     };
     //below is a temp variable storing a string with products data
-    let productsTempString = "";
-    let productsTempStringArray = [];
+    let filteredOutProducts = "";
+    let filteredOutProductsArray = [];
     inputData.forEach(el => {
         var _a;
         for (const [key, value] of Object.entries(el)) {
             if (key === "type" && value === "products") {
                 products.name = el.name;
                 products.type = el.type;
-                productsTempStringArray = ((_a = el.data) === null || _a === void 0 ? void 0 : _a.match(new RegExp("(?:Expiry Date)(.+)", "i")));
+                filteredOutProductsArray = ((_a = el.data) === null || _a === void 0 ? void 0 : _a.match(new RegExp("(?:Expiry Date)(.+)", "i")));
             }
         }
     });
     //below is a filtered out string with products data
-    productsTempString = productsTempStringArray[1];
-    console.log("string tutaj", productsTempString);
-    console.log(productsTempString.match(producutsRegexLevelTwo));
+    filteredOutProducts = filteredOutProductsArray[1];
+    filteredOutProductsArray = [];
+    filteredOutProductsArray = filteredOutProducts.match(producutsRegexLevelTwo);
+    console.log(filteredOutProducts);
+    filteredOutProductsArray.forEach((el) => {
+        console.log("acc number", el.match(productNumberRegex));
+        console.log("sort code", el.match(productSortCodeRegex));
+        //"string.filter(account open) or something"
+        console.log("is open?", el.toLowerCase().includes("open"));
+        // "allProductsNames.forEach(el=productsstring.filter(e)?thenproducts name = el."
+        allProductsNames.forEach(name => {
+            if (el.toLowerCase().includes(name.toLowerCase())) {
+                console.log("product name: ", name);
+            }
+        });
+    });
     return 3;
 }
 function formatActoneReferences(inputData) {

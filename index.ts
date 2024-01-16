@@ -5,7 +5,9 @@ import {inputString} from "./inputString.js"
 const preFilteredData: IPreFilteredData[] = [];
 
 
-let productsNames: string[] = ["MTA", "ISA", "BBLS", "BBILS", "CreditCard", "CBILS", "CLBILS", "RLS", "EFG", "unsecured loan", "investment", "investments"];
+let allProductsNames: string[] = ["MTA", "ISA", "BBLS", "BBILS", "CreditCard", "CBILS", "CLBILS", "RLS", "EFG", "unsecured loan", "investment", "investments"];
+
+//MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments
 
 
     
@@ -42,11 +44,7 @@ function searchTextForData(inputData: IRequiredData[]): string{
         if((inputString.match(el.regexRule) === null)){
             temp.data =  "n/a"
         }
-        preFilteredData.push(temp)
-        if(el.type === "phoneNumber"){
-            console.log(inputString.match(el.regexRule))
-        }
-
+        
     })
 
     formatPhoneNumbers(preFilteredData)
@@ -106,19 +104,19 @@ function formatPhoneNumbers(inputData: IPreFilteredData[]): IPhoneNumbers{
         }
        
     })
-    console.log(phoneNumbers)
+    
      return phoneNumbers
 }    
 
 function formatProducts(inputData: IPreFilteredData[]): number{
 
-    let producutsRegexLevelTwo: any = new RegExp("\\b(\\d{8,8}\\s\\d{6,6}|\\d{16,16})\\s(.*?)(?=(\\b(?:\\d+|$)))", "gi")
+    let producutsRegexLevelTwo: any = new RegExp("\\b(?:mta|cba)\\d{8}(?: \\d{6}|\\d{16})?\\b[\\s\\w]*?(?=\\b(?:mta|cba)\\d{8}(?: \\d{6}|\\d{16})?\\b|$)", "gi")
 
-    let productNumberRegex: any = new RegExp("\\d{8,8}|\\d{16,16}", "g")
-    let productSortCodeRegex: any = new RegExp("\\d{6}}")
+    let productNumberRegex: any = new RegExp("\\b\\d{8,8}\\b|\\b\\d{16,16}\\b", "g")
+    let productSortCodeRegex: any = new RegExp("\\b\\d{6,6}\\b", "g")
 
-    let isProductOpen: boolean = false //"string.filter(account open) or something"
-    let productName: string = "" // "productsNames.forEach(el=productsstring.filter(e)?thenproducts name = el."
+    let isProductOpen: boolean = false
+    let productName: string = "" 
 
     //below is target function output
     let products: IProducts = {
@@ -141,7 +139,23 @@ let filteredOutProductsArray: any = []
     })
     //below is a filtered out string with products data
 filteredOutProducts = filteredOutProductsArray[1]
-console.log(filteredOutProducts.match(producutsRegexLevelTwo))
+filteredOutProductsArray = []
+filteredOutProductsArray = filteredOutProducts.match(producutsRegexLevelTwo)
+console.log(filteredOutProducts)
+
+filteredOutProductsArray.forEach((el: any)=>{
+    
+    console.log("acc number", el.match(productNumberRegex))
+    console.log("sort code", el.match(productSortCodeRegex))
+     //"string.filter(account open) or something"
+     console.log("is open?", el.toLowerCase().includes("open"))
+     // "allProductsNames.forEach(el=productsstring.filter(e)?thenproducts name = el."
+     allProductsNames.forEach(name=>{
+       if( el.toLowerCase().includes(name.toLowerCase())){
+        console.log("product name: ", name)
+       }
+     })
+})
 
 
 
