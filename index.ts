@@ -50,7 +50,7 @@ function searchTextForData(inputData: IRequiredData[]): string{
     })
 
     formatPhoneNumbers(preFilteredData)
-
+    formatProducts(preFilteredData)
 
  return "placki"
 }
@@ -106,33 +106,43 @@ function formatPhoneNumbers(inputData: IPreFilteredData[]): IPhoneNumbers{
         }
        
     })
+    console.log(phoneNumbers)
      return phoneNumbers
 }    
 
 function formatProducts(inputData: IPreFilteredData[]): number{
 
-    let producutsRegexLevelTwo: any = new RegExp("\\b(\\d{8,8}\\s\\d{6,6}|\\d{16,16})\\s(.*?)(?=\\b\\d{8,8}\\s\\d{6,6}|\\b\\d{16,16}$)", "gi")
+    let producutsRegexLevelTwo: any = new RegExp("\\b(\\d{8,8}\\s\\d{6,6}|\\d{16,16})\\s(.*?)(?=(\\b(?:\\d+|$)))", "gi")
 
-    let productNumberRegex = new RegExp("\\d\\d\\d\\d\\d\\d\\d\\d|\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d")
-    let productSortCodeRegex = new RegExp("\\d\\d\\d\\d\\d\\d")
+    let productNumberRegex: any = new RegExp("\\d{8,8}|\\d{16,16}", "g")
+    let productSortCodeRegex: any = new RegExp("\\d{6}}")
 
-    let productIsOpen = "string.filter(account open) or something"
-    let productName = "productsNames.forEach(el=productsstring.filter(e)?thenproducts name = el."
+    let isProductOpen: boolean = false //"string.filter(account open) or something"
+    let productName: string = "" // "productsNames.forEach(el=productsstring.filter(e)?thenproducts name = el."
 
+    //below is target function output
     let products: IProducts = {
      name: "",
     type: "",
     data: [],
 }
+//below is a temp variable storing a string with products data
+let filteredOutProducts: string = ""
+let filteredOutProductsArray: any = []
 
     inputData.forEach(el=>{
         for(const [key, value] of Object.entries(el)){
             if(key === "type" && value === "products"){
                 products.name = el.name
                 products.type = el.type
+            filteredOutProductsArray = (el.data?.match(new RegExp("(?:Expiry Date)(.+)", "i")))
             }
         }
     })
+    //below is a filtered out string with products data
+filteredOutProducts = filteredOutProductsArray[1]
+console.log(filteredOutProducts.match(producutsRegexLevelTwo))
+
 
 
 

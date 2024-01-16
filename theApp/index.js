@@ -1,7 +1,7 @@
 import { requiredData } from "./requiredData.js";
 import { inputString } from "./inputString.js";
 const preFilteredData = [];
-let productsNames = ["MTA", "ISA", "BBLS", "BBILS", "CreditCard", "CBILS", "CLBILS", "RLS", "EFG", "unsecured loan"];
+let productsNames = ["MTA", "ISA", "BBLS", "BBILS", "CreditCard", "CBILS", "CLBILS", "RLS", "EFG", "unsecured loan", "investment", "investments"];
 if (typeof document !== "undefined") {
     const pasteTextHere = document.getElementById("pasteTextHere");
     pasteTextHere === null || pasteTextHere === void 0 ? void 0 : pasteTextHere.addEventListener("click", () => {
@@ -36,6 +36,7 @@ function searchTextForData(inputData) {
         }
     });
     formatPhoneNumbers(preFilteredData);
+    formatProducts(preFilteredData);
     return "placki";
 }
 //------------------------------------------------------------
@@ -83,27 +84,38 @@ function formatPhoneNumbers(inputData) {
             phoneNumbers.data[index] = el.slice(3, el.length);
         }
     });
+    console.log(phoneNumbers);
     return phoneNumbers;
 }
 function formatProducts(inputData) {
-    let producutsRegexLevelTwo = new RegExp("\\b(\\d{8,8}\\s\\d{6,6}|\\d{16,16})\\s(.*?)(?=\\b\\d{8,8}\\s\\d{6,6}|\\b\\d{16,16}$)", "gi");
-    let productNumberRegex = new RegExp("\\d\\d\\d\\d\\d\\d\\d\\d|\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d");
+    let producutsRegexLevelTwo = new RegExp("\\b(\\d{8,8}\\s\\d{6,6}|\\d{16,16})\\s(.*?)(?=(\\b(?:\\d+|$)))", "gi");
+    let productNumberRegex = new RegExp("\\d\\d\\d\\d\\d\\d\\d\\d|\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d", "g");
     let productSortCodeRegex = new RegExp("\\d\\d\\d\\d\\d\\d");
     let productIsOpen = "string.filter(account open) or something";
     let productName = "productsNames.forEach(el=productsstring.filter(e)?thenproducts name = el.";
+    //below is target function output
     let products = {
         name: "",
         type: "",
         data: [],
     };
+    //below is a temp variable storing a string with products data
+    let productsTempString = "";
+    let productsTempStringArray = [];
     inputData.forEach(el => {
+        var _a;
         for (const [key, value] of Object.entries(el)) {
             if (key === "type" && value === "products") {
                 products.name = el.name;
                 products.type = el.type;
+                productsTempStringArray = ((_a = el.data) === null || _a === void 0 ? void 0 : _a.match(new RegExp("(?:Expiry Date)(.+)", "i")));
             }
         }
     });
+    //below is a filtered out string with products data
+    productsTempString = productsTempStringArray[1];
+    console.log("string tutaj", productsTempString);
+    console.log(productsTempString.match(producutsRegexLevelTwo));
     return 3;
 }
 function formatActoneReferences(inputData) {
