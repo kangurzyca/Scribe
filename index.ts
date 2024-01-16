@@ -5,7 +5,7 @@ import {inputString} from "./inputString.js"
 const preFilteredData: IPreFilteredData[] = [];
 
 
-let productsNames: string[] = ["MTA", "ISA", "BBLS", "BBILS", "CreditCard", "CBILS", "CLBILS", "RLS", "EFG", "unsecured loan"];
+let productsNames: string[] = ["MTA", "ISA", "BBLS", "BBILS", "CreditCard", "CBILS", "CLBILS", "RLS", "EFG", "unsecured loan", "investment", "investments"];
 
 
     
