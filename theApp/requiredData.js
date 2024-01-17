@@ -85,6 +85,11 @@ export const requiredData = [
         regexRule: new RegExp("telephone number \\(optional\\)(.*?)Email Address \\(Optional\\)", "i"),
     },
     {
+        name: "Email Address",
+        type: "email",
+        regexRule: new RegExp("email address \\(optional\\)\\s*(\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b)\\s*orphan", "i"),
+    },
+    {
         name: "ActOne Reference",
         type: "actone",
         regexRule: new RegExp("reference\\s*([\\d,]*)\\s*expiry", "gi"),

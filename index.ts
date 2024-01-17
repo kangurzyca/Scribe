@@ -20,7 +20,7 @@ if(typeof document !== "undefined"){
 
 //below function returns a string for now. It will return IPreFilteredData[] type nominally.
 function searchTextForData(inputData: IRequiredData[]): string{
- 
+ console.log(inputData)
     preFilteredData.splice(0, preFilteredData.length)
     
     inputData.forEach(el=>{
@@ -110,7 +110,7 @@ function formatPhoneNumbers(inputData: IPreFilteredData[]): IPhoneNumbers{
 
 function formatProducts(inputData: IPreFilteredData[]): number{
 
-    let producutsRegexLevelTwo: any = new RegExp("\\b(?:mta|cba)\\d{8}(?: \\d{6}|\\d{16})?\\b[\\s\\w]*?(?=\\b(?:mta|cba)\\d{8}(?: \\d{6}|\\d{16})?\\b|$)", "gi")
+    let producutsRegexLevelTwo: any = new RegExp("\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\d{8}(?: \\d{6}|\\d{16})?\\b[\\s\\w]*?(?=\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\d{8}(?: \\d{6}|\\d{16})?\\b|$)", "gi")
 
     let productNumberRegex: any = new RegExp("\\b\\d{8,8}\\b|\\b\\d{16,16}\\b", "g")
     let productSortCodeRegex: any = new RegExp("\\b\\d{6,6}\\b", "g")
@@ -139,7 +139,9 @@ let filteredOutProductsArray: any = []
     })
     //below is a filtered out string with products data
 filteredOutProducts = filteredOutProductsArray[1]
+console.log(inputData)
 filteredOutProductsArray = []
+
 filteredOutProductsArray = filteredOutProducts.match(producutsRegexLevelTwo)
 console.log(filteredOutProducts)
 
