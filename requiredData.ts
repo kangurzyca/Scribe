@@ -93,7 +93,7 @@ export const requiredData: IRequiredData[]= [
     {
         name: "Email Address",
         type: "email",
-        regexRule: new RegExp("email address \\(optional\\)\\s*(***email address regex here***)\\s*orphan", "i"),
+        regexRule: new RegExp("email address \\(optional\\)\\s*(\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b)\\s*orphan", "i"),
     },
     {
         name: "ActOne Reference",
