@@ -91,6 +91,11 @@ export const requiredData: IRequiredData[]= [
         regexRule: new RegExp("telephone number \\(optional\\)(.*?)Email Address \\(Optional\\)", "i"),
     },
     {
+        name: "Email Address",
+        type: "email",
+        regexRule: new RegExp("email address \\(optional\\)\\s*(***email address regex here***)\\s*orphan", "i"),
+    },
+    {
         name: "ActOne Reference",
         type: "actone",
         regexRule: new RegExp("reference\\s*([\\d,]*)\\s*expiry", "gi"),
