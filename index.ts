@@ -22,6 +22,7 @@ if(typeof document !== "undefined"){
 function searchTextForData(inputData: IRequiredData[]): string{
  console.log(inputData)
     preFilteredData.splice(0, preFilteredData.length)
+    console.log("<'////><", preFilteredData, typeof preFilteredData)
     
     inputData.forEach(el=>{
         const temp: IPreFilteredData = {
@@ -139,7 +140,6 @@ let filteredOutProductsArray: any = []
     })
     //below is a filtered out string with products data
 filteredOutProducts = filteredOutProductsArray[1]
-console.log(inputData)
 filteredOutProductsArray = []
 
 filteredOutProductsArray = filteredOutProducts.match(producutsRegexLevelTwo)
