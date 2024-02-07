@@ -13,6 +13,7 @@ if (typeof document !== "undefined") {
 function searchTextForData(inputData) {
     console.log(inputData);
     preFilteredData.splice(0, preFilteredData.length);
+    console.log("<'////><", preFilteredData, typeof preFilteredData);
     inputData.forEach(el => {
         var _a, _b, _c;
         const temp = {
@@ -111,7 +112,6 @@ function formatProducts(inputData) {
     });
     //below is a filtered out string with products data
     filteredOutProducts = filteredOutProductsArray[1];
-    console.log(inputData);
     filteredOutProductsArray = [];
     filteredOutProductsArray = filteredOutProducts.match(producutsRegexLevelTwo);
     console.log(filteredOutProducts);
