@@ -1,62 +1,78 @@
-import { requiredData } from "./requiredData.js"
-import { IProducts, IPhoneNumbers, IRequiredData, IPreFilteredData } from "./interfaces.js"
-import {inputString} from "./inputString.js"
+import { requiredData } from "./requiredData.js";
+import {
+    IProducts,
+    IPhoneNumbers,
+    IRequiredData,
+    IPreFilteredData,
+} from "./interfaces.js";
+import { inputString } from "./inputString.js";
 
 const preFilteredData: IPreFilteredData[] = [];
-
-
-let allProductsNames: string[] = ["MTA", "ISA", "BBLS", "BBILS", "CreditCard", "CBILS", "CLBILS", "RLS", "EFG", "unsecured loan", "investment", "investments"];
+let allProductsNames: string[] = [
+    "MTA",
+    "ISA",
+    "BBLS",
+    "BBILS",
+    "CreditCard",
+    "CBILS",
+    "CLBILS",
+    "RLS",
+    "EFG",
+    "unsecured loan",
+    "investment",
+    "investments",
+];
 
 //MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments
 
-
-    
-if(typeof document !== "undefined"){
-    const pasteTextHere = document.getElementById("pasteTextHere")
-    pasteTextHere?.addEventListener("click", ()=>{
-        searchTextForData(requiredData)
-    })
+if (typeof document !== "undefined") {
+    const pasteTextHere = document.getElementById("pasteTextHere");
+    pasteTextHere?.addEventListener("click", () => {
+        searchTextForData(requiredData);
+    });
 }
 
 //below function returns a string for now. It will return IPreFilteredData[] type nominally.
-function searchTextForData(inputData: IRequiredData[]): string{
- console.log(inputData)
-    preFilteredData.splice(0, preFilteredData.length)
-    console.log("<'////><", preFilteredData, typeof preFilteredData)
+function searchTextForData(inputData: IRequiredData[]): string {
+    console.log("searchTextForData()'s arg=inputData here: ", inputData);
+    preFilteredData.splice(0, preFilteredData.length);
     
-    inputData.forEach(el=>{
+
+    inputData.forEach((el) => {
         const temp: IPreFilteredData = {
             name: el.name,
-            type: el.type
+            type: el.type,
+        };
+       
+
+        let length: any;
+        if (
+            inputString.match(el.regexRule) !== null &&
+            typeof inputString.match(el.regexRule) !== "undefined"
+        ) {
+            length = inputString.match(el.regexRule)?.length;
         }
 
-        let length: any
-        if(inputString.match(el.regexRule) !== null && typeof inputString.match(el.regexRule) !== "undefined"){
-           length  = inputString.match(el.regexRule)?.length
+        if (length === 1) {
+            temp.data = inputString.match(el.regexRule)?.at(0);
+          
         }
-        
+        if (length > 1) {
+            temp.data = inputString.match(el.regexRule)?.at(1);
+        }
+        if (inputString.match(el.regexRule) === null) {
+            temp.data = "n/a";
+        }
+       
+        preFilteredData.push(temp)
+    });
 
-        if(length === 1 ){
-            temp.data = inputString.match(el.regexRule)?.at(0)
-        }
-        if(length > 1){
-            temp.data = inputString.match(el.regexRule)?.at(1)
-        }
-        if((inputString.match(el.regexRule) === null)){
-            temp.data =  "n/a"
-        }
-        
-    })
-
+    
     formatPhoneNumbers(preFilteredData)
-    formatProducts(preFilteredData)
+    formatProducts(preFilteredData);
 
- return "placki"
+    return "placki";
 }
-
-
-
-
 
 //------------------------------------------------------------
 function pasteText() {
@@ -64,128 +80,137 @@ function pasteText() {
     navigator.clipboard
         .readText()
         .then((text) => {
-           // console.log(text)
-           searchTextForData(requiredData)
+            // console.log(text)
+            searchTextForData(requiredData);
         })
         .catch((err) => {
             console.error("Unable to read clipboard data", err);
         });
 }
 
-function formatPhoneNumbers(inputData: IPreFilteredData[]): IPhoneNumbers{
-    let phoneNumbersRegex: any = new RegExp("(?:\\+?\\d{2}\\s*|0\\s*)?\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d", "gi")
+function formatPhoneNumbers(inputData: IPreFilteredData[]): IPhoneNumbers {
+    let phoneNumbersRegex: any = new RegExp(
+        "(?:\\+?\\d{2}\\s*|0\\s*)?\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d\\s*\\d",
+        "gi"
+    );
 
-    let phoneNumbers: IPhoneNumbers ={
-             name: "",
-      type: "",
-      data: [""]
-    }   
-    
-    // find phone nubmers in 
-    inputData.forEach(el=>{
-        for (const [key, value] of Object.entries(el)){
-            if (key === "type" && value === "phoneNumber"){
-                phoneNumbers.data = el.data?.match(phoneNumbersRegex) || []
-                phoneNumbers.name = el.name
-                phoneNumbers.type = el.type
+    let phoneNumbers: IPhoneNumbers = {
+        name: "",
+        type: "",
+        data: [""],
+    };
+
+    // find phone nubmers in
+    inputData.forEach((el) => {
+        for (const [key, value] of Object.entries(el)) {
+            if (key === "type" && value === "phoneNumber") {
+                phoneNumbers.data = el.data?.match(phoneNumbersRegex) || [];
+                phoneNumbers.name = el.name;
+                phoneNumbers.type = el.type;
             }
         }
-    })
- //put numbers in an array with no spaces.
-    phoneNumbers.data?.forEach((el, index)=>{
-        phoneNumbers.data[index] = el.replace(new RegExp("\\s", "g"), "")
-    })
-//put numbers in an array with no prefixes - no zeros and +44s, others have to be kept.
-    phoneNumbers.data?.forEach((el, index)=>{
-        if(el[0]==="0"){
-            phoneNumbers.data[index] = el.slice(1, el.length)
+    });
+    //put numbers in an array with no spaces.
+    phoneNumbers.data?.forEach((el, index) => {
+        phoneNumbers.data[index] = el.replace(new RegExp("\\s", "g"), "");
+    });
+    //put numbers in an array with no prefixes - no zeros and +44s, others have to be kept.
+    phoneNumbers.data?.forEach((el, index) => {
+        if (el[0] === "0") {
+            phoneNumbers.data[index] = el.slice(1, el.length);
         }
-        if (el[0] === "+" &&el[1]==="4"  &&el[2]==="4" && el.length === 13){
-            phoneNumbers.data[index] = el.slice(3, el.length)
+        if (
+            el[0] === "+" &&
+            el[1] === "4" &&
+            el[2] === "4" &&
+            el.length === 13
+        ) {
+            phoneNumbers.data[index] = el.slice(3, el.length);
         }
-       
-    })
-    
-     return phoneNumbers
-}    
+    });
 
-function formatProducts(inputData: IPreFilteredData[]): number{
+    return phoneNumbers;
+}
 
-    let producutsRegexLevelTwo: any = new RegExp("\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\d{8}(?: \\d{6}|\\d{16})?\\b[\\s\\w]*?(?=\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\d{8}(?: \\d{6}|\\d{16})?\\b|$)", "gi")
+// below function returns a number 3 for now, it will return an object with products nominally
+function formatProducts(inputData: IPreFilteredData[]): number {
+    let productsRegexLevelTwo: any = new RegExp(
+        "\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\d{8}(?: \\d{6}|\\d{16})?\\b[\\s\\w]*?(?=\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\d{8}(?: \\d{6}|\\d{16})?\\b|$)",
+        "gi"
+    );
 
-    let productNumberRegex: any = new RegExp("\\b\\d{8,8}\\b|\\b\\d{16,16}\\b", "g")
-    let productSortCodeRegex: any = new RegExp("\\b\\d{6,6}\\b", "g")
+    let productNumberRegex: any = new RegExp(
+        "\\b\\d{8,8}\\b|\\b\\d{16,16}\\b",
+        "g"
+    );
+    let productSortCodeRegex: any = new RegExp("\\b\\d{6,6}\\b", "g");
 
-    let isProductOpen: boolean = false
-    let productName: string = "" 
+    let isProductOpen: boolean = false;
+    let productName: string = "";
 
-    //below is target function output
+    //below is a function future expected output
     let products: IProducts = {
-     name: "",
-    type: "",
-    data: [],
-}
-//below is a temp variable storing a string with products data
-let filteredOutProducts: string = ""
-let filteredOutProductsArray: any = []
-
-    inputData.forEach(el=>{
-        for(const [key, value] of Object.entries(el)){
-            if(key === "type" && value === "products"){
-                products.name = el.name
-                products.type = el.type
-            filteredOutProductsArray = (el.data?.match(new RegExp("(?:Expiry Date)(.+)", "i")))
+        name: "",
+        type: "",
+        data: [],
+    };
+    //below is a temp variable storing a string with products data
+    let filteredOutProducts: string = "";
+    let filteredOutProductsArray: any = [];
+   
+    inputData.forEach((el) => {
+        for (const [key, value] of Object.entries(el)) {
+            if (key === "type" && value === "products") {
+                products.name = el.name;
+                products.type = el.type;
+                filteredOutProductsArray = el.data?.match(
+                    new RegExp("(?:Expiry Date)(.+)", "i")
+                );
             }
         }
-    })
+    });
     //below is a filtered out string with products data
-filteredOutProducts = filteredOutProductsArray[1]
-filteredOutProductsArray = []
-
-filteredOutProductsArray = filteredOutProducts.match(producutsRegexLevelTwo)
-console.log(filteredOutProducts)
-
-filteredOutProductsArray.forEach((el: any)=>{
+    filteredOutProducts = filteredOutProductsArray[1];
+    filteredOutProductsArray = [];
+    console.log("wolololol: ", filteredOutProducts, typeof filteredOutProducts);
+    filteredOutProductsArray = filteredOutProducts.match(
+        productsRegexLevelTwo
+    );
     
-    console.log("acc number", el.match(productNumberRegex))
-    console.log("sort code", el.match(productSortCodeRegex))
-     //"string.filter(account open) or something"
-     console.log("is open?", el.toLowerCase().includes("open"))
-     // "allProductsNames.forEach(el=productsstring.filter(e)?thenproducts name = el."
-     allProductsNames.forEach(name=>{
-       if( el.toLowerCase().includes(name.toLowerCase())){
-        console.log("product name: ", name)
-       }
-     })
-})
+    // above there is a mistake. productsRegexLevelTwo doesn't work with filteredOutProducts. Null is returned hence forEach fails below.
+    //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
+    filteredOutProductsArray.forEach((el: any) => {
+        console.log("acc number", el.match(productNumberRegex));
+        console.log("sort code", el.match(productSortCodeRegex));
+        //"string.filter(account open) or something"
+        console.log("is open?", el.toLowerCase().includes("open"));
+        // "allProductsNames.forEach(el=productsstring.filter(e)?thenproducts name = el."
 
+        console.log("<'///><")
+        allProductsNames.forEach((name) => {
+            if (el.toLowerCase().includes(name.toLowerCase())) {
+                console.log("product name: ", name);
+            }
+        });
+    });
 
-
-    return 3
+    return 3;
 }
 
-function formatActoneReferences(inputData: IPreFilteredData[]): number{
-   
-    let actoneReferences: string[] = []
+function formatActoneReferences(inputData: IPreFilteredData[]): number {
+    let actoneReferences: string[] = [];
 
-    inputData.forEach(el=>{
-        for(const [key, value] of Object.entries(el)){
-            if(key === "type" && value === "actone"){
-              actoneReferences = el.data?.split(",")|| []
+    inputData.forEach((el) => {
+        for (const [key, value] of Object.entries(el)) {
+            if (key === "type" && value === "actone") {
+                actoneReferences = el.data?.split(",") || [];
             }
         }
-    })
+    });
 
-
-
-    return 3
+    return 3;
 }
-
-
-    
-   
-
 
 function createDataElements(dataObject: IPreFilteredData[]) {
     document.querySelectorAll(".results-container *").forEach((el) => {

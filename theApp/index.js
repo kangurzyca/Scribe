@@ -1,7 +1,20 @@
 import { requiredData } from "./requiredData.js";
 import { inputString } from "./inputString.js";
 const preFilteredData = [];
-let allProductsNames = ["MTA", "ISA", "BBLS", "BBILS", "CreditCard", "CBILS", "CLBILS", "RLS", "EFG", "unsecured loan", "investment", "investments"];
+let allProductsNames = [
+    "MTA",
+    "ISA",
+    "BBLS",
+    "BBILS",
+    "CreditCard",
+    "CBILS",
+    "CLBILS",
+    "RLS",
+    "EFG",
+    "unsecured loan",
+    "investment",
+    "investments",
+];
 //MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments
 if (typeof document !== "undefined") {
     const pasteTextHere = document.getElementById("pasteTextHere");
@@ -11,17 +24,17 @@ if (typeof document !== "undefined") {
 }
 //below function returns a string for now. It will return IPreFilteredData[] type nominally.
 function searchTextForData(inputData) {
-    console.log(inputData);
+    console.log("searchTextForData()'s arg=inputData here: ", inputData);
     preFilteredData.splice(0, preFilteredData.length);
-    console.log("<'////><", preFilteredData, typeof preFilteredData);
-    inputData.forEach(el => {
+    inputData.forEach((el) => {
         var _a, _b, _c;
         const temp = {
             name: el.name,
-            type: el.type
+            type: el.type,
         };
         let length;
-        if (inputString.match(el.regexRule) !== null && typeof inputString.match(el.regexRule) !== "undefined") {
+        if (inputString.match(el.regexRule) !== null &&
+            typeof inputString.match(el.regexRule) !== "undefined") {
             length = (_a = inputString.match(el.regexRule)) === null || _a === void 0 ? void 0 : _a.length;
         }
         if (length === 1) {
@@ -30,9 +43,10 @@ function searchTextForData(inputData) {
         if (length > 1) {
             temp.data = (_c = inputString.match(el.regexRule)) === null || _c === void 0 ? void 0 : _c.at(1);
         }
-        if ((inputString.match(el.regexRule) === null)) {
+        if (inputString.match(el.regexRule) === null) {
             temp.data = "n/a";
         }
+        preFilteredData.push(temp);
     });
     formatPhoneNumbers(preFilteredData);
     formatProducts(preFilteredData);
@@ -57,10 +71,10 @@ function formatPhoneNumbers(inputData) {
     let phoneNumbers = {
         name: "",
         type: "",
-        data: [""]
+        data: [""],
     };
-    // find phone nubmers in 
-    inputData.forEach(el => {
+    // find phone nubmers in
+    inputData.forEach((el) => {
         var _a;
         for (const [key, value] of Object.entries(el)) {
             if (key === "type" && value === "phoneNumber") {
@@ -79,19 +93,23 @@ function formatPhoneNumbers(inputData) {
         if (el[0] === "0") {
             phoneNumbers.data[index] = el.slice(1, el.length);
         }
-        if (el[0] === "+" && el[1] === "4" && el[2] === "4" && el.length === 13) {
+        if (el[0] === "+" &&
+            el[1] === "4" &&
+            el[2] === "4" &&
+            el.length === 13) {
             phoneNumbers.data[index] = el.slice(3, el.length);
         }
     });
     return phoneNumbers;
 }
+// below function returns a number 3 for now, it will return an object with products nominally
 function formatProducts(inputData) {
-    let producutsRegexLevelTwo = new RegExp("\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\d{8}(?: \\d{6}|\\d{16})?\\b[\\s\\w]*?(?=\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\d{8}(?: \\d{6}|\\d{16})?\\b|$)", "gi");
+    let productsRegexLevelTwo = new RegExp("\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\d{8}(?: \\d{6}|\\d{16})?\\b[\\s\\w]*?(?=\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\d{8}(?: \\d{6}|\\d{16})?\\b|$)", "gi");
     let productNumberRegex = new RegExp("\\b\\d{8,8}\\b|\\b\\d{16,16}\\b", "g");
     let productSortCodeRegex = new RegExp("\\b\\d{6,6}\\b", "g");
     let isProductOpen = false;
     let productName = "";
-    //below is target function output
+    //below is a function future expected output
     let products = {
         name: "",
         type: "",
@@ -100,28 +118,31 @@ function formatProducts(inputData) {
     //below is a temp variable storing a string with products data
     let filteredOutProducts = "";
     let filteredOutProductsArray = [];
-    inputData.forEach(el => {
+    inputData.forEach((el) => {
         var _a;
         for (const [key, value] of Object.entries(el)) {
             if (key === "type" && value === "products") {
                 products.name = el.name;
                 products.type = el.type;
-                filteredOutProductsArray = ((_a = el.data) === null || _a === void 0 ? void 0 : _a.match(new RegExp("(?:Expiry Date)(.+)", "i")));
+                filteredOutProductsArray = (_a = el.data) === null || _a === void 0 ? void 0 : _a.match(new RegExp("(?:Expiry Date)(.+)", "i"));
             }
         }
     });
     //below is a filtered out string with products data
     filteredOutProducts = filteredOutProductsArray[1];
     filteredOutProductsArray = [];
-    filteredOutProductsArray = filteredOutProducts.match(producutsRegexLevelTwo);
-    console.log(filteredOutProducts);
+    console.log("wolololol: ", filteredOutProducts, typeof filteredOutProducts);
+    filteredOutProductsArray = filteredOutProducts.match(productsRegexLevelTwo);
+    // above there is a mistake. productsRegexLevelTwo doesn't work with filteredOutProducts. Null is returned hence forEach fails below.
+    //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
     filteredOutProductsArray.forEach((el) => {
         console.log("acc number", el.match(productNumberRegex));
         console.log("sort code", el.match(productSortCodeRegex));
         //"string.filter(account open) or something"
         console.log("is open?", el.toLowerCase().includes("open"));
         // "allProductsNames.forEach(el=productsstring.filter(e)?thenproducts name = el."
-        allProductsNames.forEach(name => {
+        console.log("<'///><");
+        allProductsNames.forEach((name) => {
             if (el.toLowerCase().includes(name.toLowerCase())) {
                 console.log("product name: ", name);
             }
@@ -131,7 +152,7 @@ function formatProducts(inputData) {
 }
 function formatActoneReferences(inputData) {
     let actoneReferences = [];
-    inputData.forEach(el => {
+    inputData.forEach((el) => {
         var _a;
         for (const [key, value] of Object.entries(el)) {
             if (key === "type" && value === "actone") {
