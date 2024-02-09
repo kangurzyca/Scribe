@@ -135,7 +135,7 @@ function formatPhoneNumbers(inputData: IPreFilteredData[]): IPhoneNumbers {
 // below function returns a number 3 for now, it will return an object with products nominally
 function formatProducts(inputData: IPreFilteredData[]): number {
     let productsRegexLevelTwo: any = new RegExp(
-        "\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\d{8}(?: \\d{6}|\\d{16})?\\b[\\s\\w]*?(?=\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\d{8}(?: \\d{6}|\\d{16})?\\b|$)",
+        "\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\b.*?(?=\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\b|$)",
         "gi"
     );
 
@@ -169,30 +169,33 @@ function formatProducts(inputData: IPreFilteredData[]): number {
             }
         }
     });
-    //below is a filtered out string with products data
+    //below is a filtered out string with products data, basically a misued array, I don't know why I did this
     filteredOutProducts = filteredOutProductsArray[1];
     filteredOutProductsArray = [];
-    console.log("wolololol: ", filteredOutProducts, typeof filteredOutProducts);
+    
     filteredOutProductsArray = filteredOutProducts.match(
         productsRegexLevelTwo
     );
+    console.log("wolololol: ", filteredOutProductsArray);
+    console.log("waazaa: ", filteredOutProducts);
     
-    // above there is a mistake. productsRegexLevelTwo doesn't work with filteredOutProducts. Null is returned hence forEach fails below.
-    //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
     filteredOutProductsArray.forEach((el: any) => {
+
+        allProductsNames.forEach((name) => {
+            if (el.toLowerCase().includes(name.toLowerCase())) {
+                console.log("product name: ", name);
+            }
+        });
+
         console.log("acc number", el.match(productNumberRegex));
         console.log("sort code", el.match(productSortCodeRegex));
         //"string.filter(account open) or something"
         console.log("is open?", el.toLowerCase().includes("open"));
         // "allProductsNames.forEach(el=productsstring.filter(e)?thenproducts name = el."
 
-        console.log("<'///><")
-        allProductsNames.forEach((name) => {
-            if (el.toLowerCase().includes(name.toLowerCase())) {
-                console.log("product name: ", name);
-            }
-        });
+        console.log("")
+       
     });
 
     return 3;
