@@ -1,6 +1,7 @@
 import { requiredData } from "./requiredData.js";
 import { inputString } from "./inputString.js";
 const preFilteredData = [];
+const filteredData = [];
 let allProductsNames = [
     "MTA",
     "ISA",
@@ -20,11 +21,27 @@ if (typeof document !== "undefined") {
     const pasteTextHere = document.getElementById("pasteTextHere");
     pasteTextHere === null || pasteTextHere === void 0 ? void 0 : pasteTextHere.addEventListener("click", () => {
         searchTextForData(requiredData);
+        filteredData.push(formatPhoneNumbers(searchTextForData(requiredData)));
+        filteredData.push(formatProducts(searchTextForData(requiredData)));
+        filteredData.push(formatActoneReferences(searchTextForData(requiredData)));
+        preFilteredData.forEach((el) => {
+            for (const [key, value] of Object.entries(el)) {
+                if (key === "type" && value === "phoneNumber") {
+                    continue;
+                }
+                if (key === "type" && value === "actone") {
+                    continue;
+                }
+                if (key === "type" && value === "products") {
+                    continue;
+                }
+                filteredData.push(el);
+            }
+        });
     });
 }
 //below function returns a string for now. It will return IPreFilteredData[] type nominally.
 function searchTextForData(inputData) {
-    console.log("searchTextForData()'s arg=inputData here: ", inputData);
     preFilteredData.splice(0, preFilteredData.length);
     inputData.forEach((el) => {
         var _a, _b, _c;
@@ -48,9 +65,7 @@ function searchTextForData(inputData) {
         }
         preFilteredData.push(temp);
     });
-    formatPhoneNumbers(preFilteredData);
-    formatProducts(preFilteredData);
-    return "placki";
+    return preFilteredData;
 }
 //------------------------------------------------------------
 function pasteText() {
@@ -157,9 +172,9 @@ function formatProducts(inputData) {
         if (el.toLowerCase().includes("closed")) {
             tempProduct.isProductOpen = "closed";
         }
-        console.log(tempProduct);
+        products.data.push(tempProduct);
     });
-    return 3;
+    return products;
 }
 function formatActoneReferences(inputData) {
     let actoneReferences = [];
@@ -171,7 +186,7 @@ function formatActoneReferences(inputData) {
             }
         }
     });
-    return 3;
+    return actoneReferences;
 }
 function createDataElements(dataObject) {
     var _a;

@@ -24,4 +24,9 @@ interface IProduct {
     productSortCode: string;
     isProductOpen: string;
 }
-export { IProduct, IProducts, IPhoneNumbers, IRequiredData, IPreFilteredData };
+interface IFilteredData {
+    name: string;
+    type: string;
+    data: IProduct[] | string | string[];
+}
+export { IFilteredData, IProduct, IProducts, IPhoneNumbers, IRequiredData, IPreFilteredData };

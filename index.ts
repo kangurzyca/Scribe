@@ -5,10 +5,12 @@ import {
     IRequiredData,
     IPreFilteredData,
     IProduct,
+    IFilteredData
 } from "./interfaces.js";
 import { inputString } from "./inputString.js";
 
 const preFilteredData: IPreFilteredData[] = [];
+const filteredData: IFilteredData[] = []
 let allProductsNames: string[] = [
     "MTA",
     "ISA",
@@ -30,12 +32,35 @@ if (typeof document !== "undefined") {
     const pasteTextHere = document.getElementById("pasteTextHere");
     pasteTextHere?.addEventListener("click", () => {
         searchTextForData(requiredData);
+
+        filteredData.push(formatPhoneNumbers(searchTextForData(requiredData)));
+        filteredData.push(formatProducts(searchTextForData(requiredData)));
+        filteredData.push(
+            formatActoneReferences(searchTextForData(requiredData))
+        );
+
+        preFilteredData.forEach((el) => {
+            for (const [key, value] of Object.entries(el)) {
+                if (key === "type" && value === "phoneNumber") {
+                    continue;
+                }
+                if (key === "type" && value === "actone") {
+                    continue;
+                }
+                if (key === "type" && value === "products") {
+                    continue;
+                }
+                filteredData.push(el);
+            }
+        });
     });
 }
 
+
+
 //below function returns a string for now. It will return IPreFilteredData[] type nominally.
-function searchTextForData(inputData: IRequiredData[]): string {
-    console.log("searchTextForData()'s arg=inputData here: ", inputData);
+function searchTextForData(inputData: IRequiredData[]): IPreFilteredData[] {
+
     preFilteredData.splice(0, preFilteredData.length);
     
 
@@ -44,19 +69,16 @@ function searchTextForData(inputData: IRequiredData[]): string {
             name: el.name,
             type: el.type,
         };
-       
 
         let length: any;
         if (
             inputString.match(el.regexRule) !== null &&
             typeof inputString.match(el.regexRule) !== "undefined"
-        ) {
+        ){
             length = inputString.match(el.regexRule)?.length;
         }
-
         if (length === 1) {
             temp.data = inputString.match(el.regexRule)?.at(0);
-          
         }
         if (length > 1) {
             temp.data = inputString.match(el.regexRule)?.at(1);
@@ -64,15 +86,11 @@ function searchTextForData(inputData: IRequiredData[]): string {
         if (inputString.match(el.regexRule) === null) {
             temp.data = "n/a";
         }
-       
-        preFilteredData.push(temp)
+
+        preFilteredData.push(temp);
     });
 
-    
-    formatPhoneNumbers(preFilteredData)
-    formatProducts(preFilteredData);
-
-    return "placki";
+    return preFilteredData;
 }
 
 //------------------------------------------------------------
@@ -134,7 +152,7 @@ function formatPhoneNumbers(inputData: IPreFilteredData[]): IPhoneNumbers {
 }
 
 // below function returns a number 3 for now, it will return an object with products nominally
-function formatProducts(inputData: IPreFilteredData[]): number {
+function formatProducts(inputData: IPreFilteredData[]): IProducts {
     let productsRegexLevelTwo: any = new RegExp(
         "\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\b.*?(?=\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\b|$)",
         "gi"
@@ -158,7 +176,7 @@ function formatProducts(inputData: IPreFilteredData[]): number {
     //below is a temp variable storing a string with products data
     let filteredOutProducts: string = "";
     let filteredOutProductsArray: any = [];
-   
+
     inputData.forEach((el) => {
         for (const [key, value] of Object.entries(el)) {
             if (key === "type" && value === "products") {
@@ -173,11 +191,9 @@ function formatProducts(inputData: IPreFilteredData[]): number {
     //below is a filtered out string with products data, basically a misued array, I don't know why I did this
     filteredOutProducts = filteredOutProductsArray[1];
     filteredOutProductsArray = [];
-    
-    filteredOutProductsArray = filteredOutProducts.match(
-        productsRegexLevelTwo
-    );
-   
+
+    filteredOutProductsArray = filteredOutProducts.match(productsRegexLevelTwo);
+
     filteredOutProductsArray.forEach((el: any) => {
         const tempProduct: IProduct = {
             productName: "",
@@ -206,24 +222,28 @@ function formatProducts(inputData: IPreFilteredData[]): number {
             tempProduct.isProductOpen = "closed";
         }
 
-        console.log(tempProduct);
+        products.data.push(tempProduct);
     });
 
-    return 3;
+    return products;
 }
 
-function formatActoneReferences(inputData: IPreFilteredData[]): number {
-    let actoneReferences: string[] = [];
+function formatActoneReferences(inputData: IPreFilteredData[]): IPhoneNumbers {
+    let actoneReferences: IPhoneNumbers = {
+        name: "",
+        type: "",
+        data: [""],
+    };
 
     inputData.forEach((el) => {
         for (const [key, value] of Object.entries(el)) {
             if (key === "type" && value === "actone") {
-                actoneReferences = el.data?.split(",") || [];
+                actoneReferences.data = el.data?.split(",") || [];
             }
         }
     });
 
-    return 3;
+    return actoneReferences;
 }
 
 function createDataElements(dataObject: IPreFilteredData[]) {
