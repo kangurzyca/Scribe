@@ -4,6 +4,7 @@ import {
     IPhoneNumbers,
     IRequiredData,
     IPreFilteredData,
+    IProduct,
 } from "./interfaces.js";
 import { inputString } from "./inputString.js";
 
@@ -176,26 +177,36 @@ function formatProducts(inputData: IPreFilteredData[]): number {
     filteredOutProductsArray = filteredOutProducts.match(
         productsRegexLevelTwo
     );
-    console.log("wolololol: ", filteredOutProductsArray);
-    console.log("waazaa: ", filteredOutProducts);
-    
-
+   
     filteredOutProductsArray.forEach((el: any) => {
+        const tempProduct: IProduct = {
+            productName: "",
+            productNumber: "",
+            productSortCode: "",
+            isProductOpen: "n/a",
+        };
 
         allProductsNames.forEach((name) => {
             if (el.toLowerCase().includes(name.toLowerCase())) {
-                console.log("product name: ", name);
+                tempProduct.productName = name;
             }
         });
+        tempProduct.productNumber = el.match(productNumberRegex)[0];
 
-        console.log("acc number", el.match(productNumberRegex));
-        console.log("sort code", el.match(productSortCodeRegex));
-        //"string.filter(account open) or something"
-        console.log("is open?", el.toLowerCase().includes("open"));
-        // "allProductsNames.forEach(el=productsstring.filter(e)?thenproducts name = el."
+        if (el.match(productSortCodeRegex) === null) {
+            tempProduct.productSortCode = "n/a";
+        } else {
+            tempProduct.productSortCode = el.match(productSortCodeRegex)[0];
+        }
 
-        console.log("")
-       
+        if (el.toLowerCase().includes("open")) {
+            tempProduct.isProductOpen = "open";
+        }
+        if (el.toLowerCase().includes("closed")) {
+            tempProduct.isProductOpen = "closed";
+        }
+
+        console.log(tempProduct);
     });
 
     return 3;

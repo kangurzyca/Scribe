@@ -16,11 +16,12 @@ interface IPhoneNumbers {
 interface IProducts {
     name: string;
     type: string;
-    data: {
-        productName: string;
-        productNumber: string;
-        productSortCode: string;
-        isProductOpen: boolean;
-    }[];
+    data: IProduct[];
 }
-export { IProducts, IPhoneNumbers, IRequiredData, IPreFilteredData };
+interface IProduct {
+    productName: string;
+    productNumber: string;
+    productSortCode: string;
+    isProductOpen: string;
+}
+export { IProduct, IProducts, IPhoneNumbers, IRequiredData, IPreFilteredData };
