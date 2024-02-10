@@ -34,10 +34,7 @@ if (typeof document !== "undefined") {
     pasteTextHere?.addEventListener("click", () => {
         searchTextForData(requiredData);
 
-        filteredData.push(formatPhoneNumbers(searchTextForData(requiredData)));
-        filteredData.push(formatProducts(searchTextForData(requiredData)));
-        filteredData.push(formatActoneReferences(searchTextForData(requiredData)));
-
+        
         preFilteredData.forEach((el) => {
             switch (el.type) {
                 case "phoneNumber":
@@ -52,7 +49,9 @@ if (typeof document !== "undefined") {
         });
         console.log(filteredData)
     });
-    
+    filteredData.push(formatPhoneNumbers(preFilteredData));
+        filteredData.push(formatProducts(preFilteredData));
+        filteredData.push(formatActoneReferences(preFilteredData));
 }
 
 
@@ -156,7 +155,7 @@ function formatPhoneNumbers(inputData: IPreFilteredData[]): IPhoneNumbers {
     return phoneNumbers;
 }
 
-function formatProducts(inputData: IPreFilteredData[]): IProducts {
+function formatProducts(inputData: IPreFilteredData[]): IProducts{
     let productsRegexLevelTwo: any = new RegExp(
         "\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\b.*?(?=\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\b|$)",
         "gi"

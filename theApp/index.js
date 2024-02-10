@@ -22,9 +22,6 @@ if (typeof document !== "undefined") {
     const pasteTextHere = document.getElementById("pasteTextHere");
     pasteTextHere === null || pasteTextHere === void 0 ? void 0 : pasteTextHere.addEventListener("click", () => {
         searchTextForData(requiredData);
-        filteredData.push(formatPhoneNumbers(searchTextForData(requiredData)));
-        filteredData.push(formatProducts(searchTextForData(requiredData)));
-        filteredData.push(formatActoneReferences(searchTextForData(requiredData)));
         preFilteredData.forEach((el) => {
             switch (el.type) {
                 case "phoneNumber":
@@ -39,6 +36,9 @@ if (typeof document !== "undefined") {
         });
         console.log(filteredData);
     });
+    filteredData.push(formatPhoneNumbers(preFilteredData));
+    filteredData.push(formatProducts(preFilteredData));
+    filteredData.push(formatActoneReferences(preFilteredData));
 }
 //below function returns a IPreFilteredData[] type. Prefiltered data is later used to perform second level filtering for specific information
 function searchTextForData(inputData) {
