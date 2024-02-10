@@ -1,1 +1,1 @@
-export declare const inputString: string;
+export declare let inputString: string;

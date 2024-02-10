@@ -42,10 +42,15 @@ export const requiredData: IRequiredData[]= [
         regexRule: new RegExp("\\b(?:\\bTitle\\s+)(\\w+)", "i"),
     },
 
+    // {
+    //     name: "First Name",
+    //     type: "firstName",
+    //     regexRule: new RegExp("(?:\\bfirst name \\s+)(\\w+(?:\\s+\\w+)*)\\s+middle name", "i"),
+    // },
     {
         name: "First Name",
         type: "firstName",
-        regexRule: new RegExp("(?:\\bfirst name\\s+)(\\w+(?:\\s+\\w+)*)\\s+middle name", "i"),
+        regexRule: new RegExp("(?:\\bfirst name )(\\w+(?:\\s+\\w+)*)\\s+middle name", "i"),
     },
     {
         name: "Middle Name",
@@ -98,7 +103,7 @@ export const requiredData: IRequiredData[]= [
     {
         name: "ActOne Reference",
         type: "actone",
-        regexRule: new RegExp("reference\\s*([\\d,]*)\\s*expiry", "gi"),
+        regexRule: new RegExp("(?<=\\breference\\b\\s*).*?(?=\\s*\\bexpiry\\b)", "gi"),
     },
     {
         name: "Products",

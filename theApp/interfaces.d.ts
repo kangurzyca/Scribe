@@ -27,6 +27,6 @@ interface IProduct {
 interface IFilteredData {
     name: string;
     type: string;
-    data: IProduct[] | string | string[];
+    data?: IProduct[] | string | string[];
 }
 export { IFilteredData, IProduct, IProducts, IPhoneNumbers, IRequiredData, IPreFilteredData };

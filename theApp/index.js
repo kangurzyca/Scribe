@@ -17,6 +17,7 @@ let allProductsNames = [
     "investments",
 ];
 //MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments
+//adding EVENT LISTENER HERE in a IF statement due to TypeScript reasons
 if (typeof document !== "undefined") {
     const pasteTextHere = document.getElementById("pasteTextHere");
     pasteTextHere === null || pasteTextHere === void 0 ? void 0 : pasteTextHere.addEventListener("click", () => {
@@ -25,22 +26,21 @@ if (typeof document !== "undefined") {
         filteredData.push(formatProducts(searchTextForData(requiredData)));
         filteredData.push(formatActoneReferences(searchTextForData(requiredData)));
         preFilteredData.forEach((el) => {
-            for (const [key, value] of Object.entries(el)) {
-                if (key === "type" && value === "phoneNumber") {
-                    continue;
-                }
-                if (key === "type" && value === "actone") {
-                    continue;
-                }
-                if (key === "type" && value === "products") {
-                    continue;
-                }
-                filteredData.push(el);
+            switch (el.type) {
+                case "phoneNumber":
+                    break;
+                case "actone":
+                    break;
+                case "products":
+                    break;
+                default:
+                    filteredData.push(el);
             }
         });
+        console.log(filteredData);
     });
 }
-//below function returns a string for now. It will return IPreFilteredData[] type nominally.
+//below function returns a IPreFilteredData[] type. Prefiltered data is later used to perform second level filtering for specific information
 function searchTextForData(inputData) {
     preFilteredData.splice(0, preFilteredData.length);
     inputData.forEach((el) => {
@@ -53,6 +53,12 @@ function searchTextForData(inputData) {
         if (inputString.match(el.regexRule) !== null &&
             typeof inputString.match(el.regexRule) !== "undefined") {
             length = (_a = inputString.match(el.regexRule)) === null || _a === void 0 ? void 0 : _a.length;
+        }
+        if (el.type === "firstName") {
+            console.log(inputString.match(el.regexRule));
+        }
+        if (el.type === "middleName") {
+            console.log(inputString.match(el.regexRule));
         }
         if (length === 1) {
             temp.data = (_b = inputString.match(el.regexRule)) === null || _b === void 0 ? void 0 : _b.at(0);
@@ -117,7 +123,6 @@ function formatPhoneNumbers(inputData) {
     });
     return phoneNumbers;
 }
-// below function returns a number 3 for now, it will return an object with products nominally
 function formatProducts(inputData) {
     let productsRegexLevelTwo = new RegExp("\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\b.*?(?=\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\b|$)", "gi");
     let productNumberRegex = new RegExp("\\b\\d{8,8}\\b|\\b\\d{16,16}\\b", "g");
@@ -177,12 +182,20 @@ function formatProducts(inputData) {
     return products;
 }
 function formatActoneReferences(inputData) {
-    let actoneReferences = [];
+    let actoneReferences = {
+        name: "",
+        type: "",
+        data: [""],
+    };
     inputData.forEach((el) => {
-        var _a;
+        var _a, _b;
         for (const [key, value] of Object.entries(el)) {
             if (key === "type" && value === "actone") {
-                actoneReferences = ((_a = el.data) === null || _a === void 0 ? void 0 : _a.split(",")) || [];
+                actoneReferences.name = el.name;
+                actoneReferences.type = el.type;
+                el.data = (_a = el.data) === null || _a === void 0 ? void 0 : _a.replace(" ", "");
+                actoneReferences.data = ((_b = el.data) === null || _b === void 0 ? void 0 : _b.split(",")) || [];
+                actoneReferences.data.pop();
             }
         }
     });

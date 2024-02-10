@@ -31,7 +31,7 @@ interface IProduct{
 interface IFilteredData{
     name: string;
     type: string;
-    data: IProduct[] | string | string[]
+    data?: IProduct[] | string | string[]
 }
 
 

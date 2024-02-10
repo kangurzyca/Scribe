@@ -28,6 +28,7 @@ let allProductsNames: string[] = [
 
 //MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments
 
+//adding EVENT LISTENER HERE in a IF statement due to TypeScript reasons
 if (typeof document !== "undefined") {
     const pasteTextHere = document.getElementById("pasteTextHere");
     pasteTextHere?.addEventListener("click", () => {
@@ -35,30 +36,28 @@ if (typeof document !== "undefined") {
 
         filteredData.push(formatPhoneNumbers(searchTextForData(requiredData)));
         filteredData.push(formatProducts(searchTextForData(requiredData)));
-        filteredData.push(
-            formatActoneReferences(searchTextForData(requiredData))
-        );
+        filteredData.push(formatActoneReferences(searchTextForData(requiredData)));
 
         preFilteredData.forEach((el) => {
-            for (const [key, value] of Object.entries(el)) {
-                if (key === "type" && value === "phoneNumber") {
-                    continue;
-                }
-                if (key === "type" && value === "actone") {
-                    continue;
-                }
-                if (key === "type" && value === "products") {
-                    continue;
-                }
-                filteredData.push(el);
+            switch (el.type) {
+                case "phoneNumber":
+                    break;
+                case "actone":
+                    break;
+                case "products":
+                    break;
+                default:
+                    filteredData.push(el);
             }
         });
+        console.log(filteredData)
     });
+    
 }
 
 
 
-//below function returns a string for now. It will return IPreFilteredData[] type nominally.
+//below function returns a IPreFilteredData[] type. Prefiltered data is later used to perform second level filtering for specific information
 function searchTextForData(inputData: IRequiredData[]): IPreFilteredData[] {
 
     preFilteredData.splice(0, preFilteredData.length);
@@ -76,6 +75,12 @@ function searchTextForData(inputData: IRequiredData[]): IPreFilteredData[] {
             typeof inputString.match(el.regexRule) !== "undefined"
         ){
             length = inputString.match(el.regexRule)?.length;
+        }
+        if(el.type === "firstName"){
+            console.log(inputString.match(el.regexRule))
+        }
+        if(el.type === "middleName"){
+            console.log(inputString.match(el.regexRule))
         }
         if (length === 1) {
             temp.data = inputString.match(el.regexRule)?.at(0);
@@ -151,7 +156,6 @@ function formatPhoneNumbers(inputData: IPreFilteredData[]): IPhoneNumbers {
     return phoneNumbers;
 }
 
-// below function returns a number 3 for now, it will return an object with products nominally
 function formatProducts(inputData: IPreFilteredData[]): IProducts {
     let productsRegexLevelTwo: any = new RegExp(
         "\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\b.*?(?=\\b(?:MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments)\\b|$)",
@@ -238,11 +242,15 @@ function formatActoneReferences(inputData: IPreFilteredData[]): IPhoneNumbers {
     inputData.forEach((el) => {
         for (const [key, value] of Object.entries(el)) {
             if (key === "type" && value === "actone") {
+                actoneReferences.name = el.name
+                actoneReferences.type = el.type
+                el.data = el.data?.replace(" ", "");
                 actoneReferences.data = el.data?.split(",") || [];
+                actoneReferences.data.pop();
             }
         }
     });
-
+  
     return actoneReferences;
 }
 
