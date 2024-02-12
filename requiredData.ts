@@ -50,7 +50,7 @@ export const requiredData: IRequiredData[]= [
     {
         name: "First Name",
         type: "firstName",
-        regexRule: new RegExp("(?:\\bfirst name )(\\w+(?:\\s+\\w+)*)\\s+middle name", "i"),
+        regexRule: new RegExp("(?:\\bfirst name\\s+)(\\w+(?:\\s+\\w+)*)\\s+middle", "i"),
     },
     {
         name: "Middle Name",

@@ -34,7 +34,6 @@ if (typeof document !== "undefined") {
     pasteTextHere?.addEventListener("click", () => {
         searchTextForData(requiredData);
 
-        
         preFilteredData.forEach((el) => {
             switch (el.type) {
                 case "phoneNumber":
@@ -47,11 +46,22 @@ if (typeof document !== "undefined") {
                     filteredData.push(el);
             }
         });
-        console.log(filteredData)
-    });
-    filteredData.push(formatPhoneNumbers(preFilteredData));
+        console.log("filteredData: ", filteredData);
+        console.log(
+            "formating phone numbers: ",
+            formatPhoneNumbers(preFilteredData)
+        );
+        console.log(
+            "formattiing actone references: ",
+            formatActoneReferences(preFilteredData)
+        );
+        console.log("formatting products: ", formatProducts(preFilteredData));
+
+        filteredData.push(formatPhoneNumbers(preFilteredData));
         filteredData.push(formatProducts(preFilteredData));
         filteredData.push(formatActoneReferences(preFilteredData));
+        console.log("filtered data: ", filteredData)
+    });
 }
 
 
@@ -194,7 +204,7 @@ function formatProducts(inputData: IPreFilteredData[]): IProducts{
     //below is a filtered out string with products data, basically a misued array, I don't know why I did this
     filteredOutProducts = filteredOutProductsArray[1];
     filteredOutProductsArray = [];
-
+    console.log(filteredOutProducts)
     filteredOutProductsArray = filteredOutProducts.match(productsRegexLevelTwo);
 
     filteredOutProductsArray.forEach((el: any) => {
