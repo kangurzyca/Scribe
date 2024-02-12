@@ -47,32 +47,32 @@ export const requiredData = [
     {
         name: "First Name",
         type: "firstName",
-        regexRule: new RegExp("(?:\\bfirst name\\s+)(\\w+(?:\\s+\\w+)*)\\s+middle", "i"),
+        regexRule: new RegExp("(?:\\bfirst name\\s+)([\\p{L}\\s]+)\\s+middle", "iu"),
     },
     {
         name: "Middle Name",
         type: "middleName",
-        regexRule: new RegExp("(?:\\bmiddle name \\(optional\\)\\s+)(\\w+(?:\\s+\\w+)*)\\s+last name", "i"),
+        regexRule: new RegExp("(?:\\bmiddle name \\(optional\\)\\s+)([\\p{L}\\s]+)\\s+last name", "iu"),
     },
     {
         name: "Last Name",
         type: "lastName",
-        regexRule: new RegExp("(?:\\blast name\\s+)(\\w+(?:\\s+\\w+)*)\\s+Address line 1", "i"),
+        regexRule: new RegExp("(?:\\blast name\\s+)([\\p{L}\\s]+)\\s+Address line 1", "iu"),
     },
     {
         name: "Address Line 1",
         type: "addressLineOne",
-        regexRule: new RegExp("(?:\\bAddress line 1\\s*)(\\w+(?:\\s+\\w+)*)\\s+Address line 2", "i"),
+        regexRule: new RegExp("(?:\\bAddress line 1\\s*)([\\p{L}\\d\\s]+)\\s+Address line 2", "iu"),
     },
     {
         name: "Address Line 2",
         type: "addressLineTwo",
-        regexRule: new RegExp("(?:\\bAddress line 2\\s*\\(Optional\\)\\s+)(\\w+(?:\\s+\\w+)*)\\s+City\\/Town", "i"),
+        regexRule: new RegExp("(?:\\bAddress line 2\\s*\\(Optional\\)\\s+)([\\p{L}\\d\\s]+)\\s+City\\/Town", "iu"),
     },
     {
         name: "City/Town",
         type: "addressTown",
-        regexRule: new RegExp("City\\/Town\\s+([\\w\\s]+)\\s+Post\\s+code", "i"),
+        regexRule: new RegExp("City\\/Town\\s+([\\p{L}\\d\\s]+)\\s+Post\\s+code", "iu"),
     },
     {
         name: "Postcode",
