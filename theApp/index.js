@@ -21,6 +21,8 @@ let allProductsNames = [
 if (typeof document !== "undefined") {
     const pasteTextHere = document.getElementById("pasteTextHere");
     pasteTextHere === null || pasteTextHere === void 0 ? void 0 : pasteTextHere.addEventListener("click", () => {
+        //clearing out filteredData array
+        filteredData.splice(0);
         searchTextForData(requiredData);
         preFilteredData.forEach((el) => {
             switch (el.type) {
