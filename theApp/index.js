@@ -36,14 +36,11 @@ if (typeof document !== "undefined") {
                     filteredData.push(el);
             }
         });
-        console.log("filteredData: ", filteredData);
-        console.log("formating phone numbers: ", formatPhoneNumbers(preFilteredData));
-        console.log("formattiing actone references: ", formatActoneReferences(preFilteredData));
-        console.log("formatting products: ", formatProducts(preFilteredData));
         filteredData.push(formatPhoneNumbers(preFilteredData));
         filteredData.push(formatProducts(preFilteredData));
         filteredData.push(formatActoneReferences(preFilteredData));
         console.log("filtered data: ", filteredData);
+        displayDataElements(filteredData);
     });
 }
 //below function returns a IPreFilteredData[] type. Prefiltered data is later used to perform second level filtering for specific information
@@ -59,12 +56,6 @@ function searchTextForData(inputData) {
         if (inputString.match(el.regexRule) !== null &&
             typeof inputString.match(el.regexRule) !== "undefined") {
             length = (_a = inputString.match(el.regexRule)) === null || _a === void 0 ? void 0 : _a.length;
-        }
-        if (el.type === "firstName") {
-            console.log(inputString.match(el.regexRule));
-        }
-        if (el.type === "middleName") {
-            console.log(inputString.match(el.regexRule));
         }
         if (length === 1) {
             temp.data = (_b = inputString.match(el.regexRule)) === null || _b === void 0 ? void 0 : _b.at(0);
@@ -157,7 +148,6 @@ function formatProducts(inputData) {
     //below is a filtered out string with products data, basically a misued array, I don't know why I did this
     filteredOutProducts = filteredOutProductsArray[1];
     filteredOutProductsArray = [];
-    console.log(filteredOutProducts);
     filteredOutProductsArray = filteredOutProducts.match(productsRegexLevelTwo);
     filteredOutProductsArray.forEach((el) => {
         const tempProduct = {
@@ -208,22 +198,25 @@ function formatActoneReferences(inputData) {
     });
     return actoneReferences;
 }
-function createDataElements(dataObject) {
+function displayDataElements(dataObject) {
+    // document.querySelectorAll(".results-container *").forEach((el) => {
+    //     el.remove();
+    // });
+    // document.querySelectorAll(".results-container").forEach((el) => {
+    //     el.remove();
+    // });
     var _a;
-    document.querySelectorAll(".results-container *").forEach((el) => {
-        el.remove();
-    });
-    document.querySelectorAll(".results-container").forEach((el) => {
-        el.remove();
-    });
     let resultsContainer = document.createElement("div");
     resultsContainer.classList.add("results-container");
-    if (document.querySelector(".container") === null) {
+    if (document.querySelector(".container") !== null) {
         (_a = document.querySelector(".container")) === null || _a === void 0 ? void 0 : _a.appendChild(resultsContainer);
     }
     dataObject.forEach((el) => {
         let temporaryElement = document.createElement("p");
-        temporaryElement.textContent = el.data + ": ";
+        temporaryElement.innerHTML = `
+        <span>${el.name}: </span>
+        <span>${el.data}</span>
+        `; //backtick here <<<<
         // el.splice(1).forEach((element) => {
         //     let temporaryElementSpan = document.createElement("span");
         //     temporaryElement.appendChild(temporaryElementSpan);
@@ -238,6 +231,8 @@ function createDataElements(dataObject) {
         // });
         resultsContainer.appendChild(temporaryElement);
     });
+}
+function displayProducts(dataObject) {
 }
 // function copyToClipboard(e) {
 //     const text = e.target.textContent;

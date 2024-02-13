@@ -50,21 +50,12 @@ if (typeof document !== "undefined") {
                     filteredData.push(el);
             }
         });
-        console.log("filteredData: ", filteredData);
-        console.log(
-            "formating phone numbers: ",
-            formatPhoneNumbers(preFilteredData)
-        );
-        console.log(
-            "formattiing actone references: ",
-            formatActoneReferences(preFilteredData)
-        );
-        console.log("formatting products: ", formatProducts(preFilteredData));
-
+       
         filteredData.push(formatPhoneNumbers(preFilteredData));
         filteredData.push(formatProducts(preFilteredData));
         filteredData.push(formatActoneReferences(preFilteredData));
         console.log("filtered data: ", filteredData)
+        displayDataElements(filteredData)
     });
 }
 
@@ -88,12 +79,6 @@ function searchTextForData(inputData: IRequiredData[]): IPreFilteredData[] {
             typeof inputString.match(el.regexRule) !== "undefined"
         ){
             length = inputString.match(el.regexRule)?.length;
-        }
-        if(el.type === "firstName"){
-            console.log(inputString.match(el.regexRule))
-        }
-        if(el.type === "middleName"){
-            console.log(inputString.match(el.regexRule))
         }
         if (length === 1) {
             temp.data = inputString.match(el.regexRule)?.at(0);
@@ -208,7 +193,6 @@ function formatProducts(inputData: IPreFilteredData[]): IProducts{
     //below is a filtered out string with products data, basically a misued array, I don't know why I did this
     filteredOutProducts = filteredOutProductsArray[1];
     filteredOutProductsArray = [];
-    console.log(filteredOutProducts)
     filteredOutProductsArray = filteredOutProducts.match(productsRegexLevelTwo);
 
     filteredOutProductsArray.forEach((el: any) => {
@@ -267,24 +251,28 @@ function formatActoneReferences(inputData: IPreFilteredData[]): IPhoneNumbers {
     return actoneReferences;
 }
 
-function createDataElements(dataObject: IPreFilteredData[]) {
-    document.querySelectorAll(".results-container *").forEach((el) => {
-        el.remove();
-    });
-    document.querySelectorAll(".results-container").forEach((el) => {
-        el.remove();
-    });
+function displayDataElements(dataObject: IFilteredData[]): void {
+    // document.querySelectorAll(".results-container *").forEach((el) => {
+    //     el.remove();
+    // });
+    // document.querySelectorAll(".results-container").forEach((el) => {
+    //     el.remove();
+    // });
 
     let resultsContainer: HTMLDivElement = document.createElement("div");
     resultsContainer.classList.add("results-container");
-    if (document.querySelector(".container") === null) {
+    if (document.querySelector(".container") !== null) {
         document.querySelector(".container")?.appendChild(resultsContainer);
     }
 
     dataObject.forEach((el) => {
         let temporaryElement: HTMLParagraphElement =
             document.createElement("p");
-        temporaryElement.textContent = el.data + ": ";
+        temporaryElement.innerHTML =`
+        <span>${el.name}: </span>
+        <span>${el.data}</span>
+        ` //backtick here <<<<
+
 
         // el.splice(1).forEach((element) => {
         //     let temporaryElementSpan = document.createElement("span");
@@ -301,6 +289,9 @@ function createDataElements(dataObject: IPreFilteredData[]) {
         // });
         resultsContainer.appendChild(temporaryElement);
     });
+}
+function displayProducts (dataObject: IFilteredData[]): void {
+    
 }
 
 // function copyToClipboard(e) {
