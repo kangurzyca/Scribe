@@ -8,6 +8,7 @@ import {
     IFilteredData
 } from "./interfaces.js";
 import { inputString } from "./inputString.js";
+import { saveToLocalStorage, readFromLocalStorage, checkForLocalStorage, checkForDataCompleteness } from "./handleLocalStorage.js";
 
 const preFilteredData: IPreFilteredData[] = [];
 const filteredData: IFilteredData[] = []
@@ -58,6 +59,29 @@ if (typeof document !== "undefined") {
         displayDataElements(filteredData)
     });
 }
+if (typeof document !== "undefined") {
+    const saveData = document.getElementById("saveData");
+    saveData?.addEventListener("click", () => {
+        saveToLocalStorage({
+            name: "",
+            type: "",
+            data: ""
+        })
+    })
+}
+if (typeof document !== "undefined") {
+    const readData = document.getElementById("readData");
+    readData?.addEventListener("click", () => {
+        readFromLocalStorage({
+            name: "",
+            type: "",
+            data: ""
+        })
+    })
+}
+
+checkForDataCompleteness()
+checkForLocalStorage()
 
 
 

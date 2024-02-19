@@ -1,5 +1,6 @@
 import { requiredData } from "./requiredData.js";
 import { inputString } from "./inputString.js";
+import { saveToLocalStorage, readFromLocalStorage, checkForLocalStorage, checkForDataCompleteness } from "./handleLocalStorage.js";
 const preFilteredData = [];
 const filteredData = [];
 let allProductsNames = [
@@ -43,6 +44,28 @@ if (typeof document !== "undefined") {
         displayDataElements(filteredData);
     });
 }
+if (typeof document !== "undefined") {
+    const saveData = document.getElementById("saveData");
+    saveData === null || saveData === void 0 ? void 0 : saveData.addEventListener("click", () => {
+        saveToLocalStorage({
+            name: "",
+            type: "",
+            data: ""
+        });
+    });
+}
+if (typeof document !== "undefined") {
+    const readData = document.getElementById("readData");
+    readData === null || readData === void 0 ? void 0 : readData.addEventListener("click", () => {
+        readFromLocalStorage({
+            name: "",
+            type: "",
+            data: ""
+        });
+    });
+}
+checkForDataCompleteness();
+checkForLocalStorage();
 //below function returns a IPreFilteredData[] type. Prefiltered data is later used to perform second level filtering for specific information
 function searchTextForData(inputData) {
     preFilteredData.splice(0, preFilteredData.length);
