@@ -1,14 +1,15 @@
+const myKey = "ExitCasesScribeAppData";
 export function saveToLocalStorage(arg) {
     const dataToSave = {
         name: "Alakazam",
         type: "Pokemon",
         data: "Psychic",
     };
-    localStorage.setItem("ExitCasesScribeAppData", JSON.stringify(dataToSave));
+    localStorage.setItem(myKey, JSON.stringify(dataToSave));
     console.log("saved to local storage");
 }
 export function readFromLocalStorage(arg) {
-    const myValue = localStorage.getItem("ExitCasesScribeAppData");
+    const myValue = localStorage.getItem(myKey);
     // Check if the value exists
     if (myValue !== null) {
         console.log("Value found in localStorage:", myValue);
@@ -23,6 +24,10 @@ export function readFromLocalStorage(arg) {
     };
     console.log("reading data:\n....data read");
     return dataFromLocalStorage;
+}
+export function clearLocalStorage() {
+    localStorage.removeItem(myKey);
+    console.log("data removed from local storage");
 }
 export function checkForLocalStorage() {
     // this function checks for local storage.

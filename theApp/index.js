@@ -1,6 +1,6 @@
 import { requiredData } from "./requiredData.js";
 import { inputString } from "./inputString.js";
-import { saveToLocalStorage, readFromLocalStorage, checkForLocalStorage, checkForDataCompleteness } from "./handleLocalStorage.js";
+import { saveToLocalStorage, readFromLocalStorage, checkForLocalStorage, checkForDataCompleteness, clearLocalStorage } from "./handleLocalStorage.js";
 const preFilteredData = [];
 const filteredData = [];
 let allProductsNames = [
@@ -62,6 +62,12 @@ if (typeof document !== "undefined") {
             type: "",
             data: ""
         });
+    });
+}
+if (typeof document !== "undefined") {
+    const readData = document.getElementById("removeData");
+    readData === null || readData === void 0 ? void 0 : readData.addEventListener("click", () => {
+        clearLocalStorage();
     });
 }
 checkForDataCompleteness();

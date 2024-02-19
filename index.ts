@@ -8,7 +8,7 @@ import {
     IFilteredData
 } from "./interfaces.js";
 import { inputString } from "./inputString.js";
-import { saveToLocalStorage, readFromLocalStorage, checkForLocalStorage, checkForDataCompleteness } from "./handleLocalStorage.js";
+import { saveToLocalStorage, readFromLocalStorage, checkForLocalStorage, checkForDataCompleteness, clearLocalStorage } from "./handleLocalStorage.js";
 
 const preFilteredData: IPreFilteredData[] = [];
 const filteredData: IFilteredData[] = []
@@ -77,6 +77,12 @@ if (typeof document !== "undefined") {
             type: "",
             data: ""
         })
+    })
+}
+if (typeof document !== "undefined") {
+    const readData = document.getElementById("removeData");
+    readData?.addEventListener("click", () => {
+        clearLocalStorage()
     })
 }
 

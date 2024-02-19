@@ -1,6 +1,8 @@
 // import some interfaces
 import { IFilteredData } from "./interfaces.js";
 
+const myKey:string = "ExitCasesScribeAppData"
+
 export function saveToLocalStorage(arg: IFilteredData):void{
 
     const dataToSave: IFilteredData = {
@@ -9,14 +11,14 @@ export function saveToLocalStorage(arg: IFilteredData):void{
         data: "Psychic",
     };
 
-    localStorage.setItem("ExitCasesScribeAppData", JSON.stringify(dataToSave))
+    localStorage.setItem(myKey, JSON.stringify(dataToSave))
     console.log("saved to local storage")
 
 }
 
 export function readFromLocalStorage(arg: IFilteredData):IFilteredData{
 
-    const myValue = localStorage.getItem("ExitCasesScribeAppData");
+    const myValue = localStorage.getItem(myKey);
 
     // Check if the value exists
     if (myValue !== null) {
@@ -34,6 +36,11 @@ export function readFromLocalStorage(arg: IFilteredData):IFilteredData{
     console.log("reading data:\n....data read")
 
     return dataFromLocalStorage
+}
+
+export function clearLocalStorage():void{
+    localStorage.removeItem(myKey);
+    console.log("data removed from local storage")
 }
 
 export function checkForLocalStorage():void{
