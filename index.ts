@@ -29,6 +29,18 @@ let allProductsNames: string[] = [
 
 //MTA|ISA|BBLS|BBILS|CreditCard|BILS|CLBILS|RLS|EFG|unsecured loan|investment|investments
 
+
+//I will need a variable to use to pass through it an array of cases to save to and read from local storage.
+//this array would allow to list cases so user can choose wich one is displayed
+//I will need a clickable list of cases to select
+
+//I will need a button for adding phone numbers
+//I will need a button for adding products
+//something like a long press to amend a detail here in scribe
+
+
+
+
 //adding EVENT LISTENER HERE in a IF statement due to TypeScript reasons
 if (typeof document !== "undefined") {
     const pasteTextHere = document.getElementById("pasteTextHere");

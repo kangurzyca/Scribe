@@ -3,7 +3,17 @@ import { IFilteredData } from "./interfaces.js";
 
 const myKey:string = "ExitCasesScribeAppData"
 
+// i will need a function that fetches a selected ccase from local storage upon a cases list click
+// a popup security measure to ask for saving first an unssaved case
+
 export function saveToLocalStorage(arg: IFilteredData):void{
+
+    //I need to save data saved from clipboard to a variable
+    //this funciton reads local storage then
+    //parses from string to get an array of cases them
+    //checks if case exists then
+    //if doesn't exist pushes current case
+    //stringifies and saves to local storage
 
     const dataToSave: IFilteredData = {
         name: "Alakazam",
